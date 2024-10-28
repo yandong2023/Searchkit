@@ -22,7 +22,12 @@ const searchTools = [
     { name: "citationSearch", prefix: "cite:" },
     { name: "hashtagSearch", prefix: "#" },
     { name: "locationSearch", prefix: "location:" },
-    { name: "timeRangeSearch", prefix: "daterange:" }
+    { name: "timeRangeSearch", prefix: "daterange:" },
+    { name: "similarSites", prefix: "" },
+    { name: "commonCrawl", prefix: "commoncrawl:" },
+    { name: "iconSearch", prefix: "", suffix: " icon filetype:png" },
+    { name: "youtubeDownload", prefix: "https://www.99x.", suffix: "" },
+    { name: "demandSearch", prefix: "", suffix: " online" }
 ];
 
 const languages = {
@@ -33,7 +38,7 @@ const languages = {
         defaultTip: "输入搜索词，或点击上方按钮使用高级搜索技巧",
         tipPrefix: "提示：",
         userTypes: {
-            general: "普通用户",
+            general: "普通户",
             researcher: "学术研究者",
             dataAnalyst: "数据分析师",
             investigativeJournalist: "调查记者",
@@ -41,46 +46,114 @@ const languages = {
             legalProfessional: "法律专业人士"
         },
         tools: {
-            exactMatch: { name: "精确匹配", description: "将搜索词放在引号中进行精确匹配搜索" },
-            exclude: { name: "排除词", description: "在词前加减号可以排除包含该词的结果" },
-            siteSearch: { 
-                name: "站内搜索", 
-                description: "限定在特定网站内搜索，如：site:example.com",
-                suggestion: "常用学术网站：site:scholar.google.com, site:researchgate.net, site:academia.edu"
+            exactMatch: {
+                name: "精确匹配",
+                description: "使用引号进行精确短语搜索"
             },
-            fileType: { name: "文件类型", description: "搜索特定类型的文件，如：filetype:pdf" },
-            orSearch: { name: "OR搜索", description: "搜索多个关键词之一" },
-            titleSearch: { name: "标题搜索", description: "搜索标题中包含特定词的页面" },
-            bodySearch: { name: "正文搜索", description: "搜索正文中包含特定词的页面" },
-            urlSearch: { name: "URL搜索", description: "搜索URL中包含特定词的页面" },
-            relatedSites: { name: "相关网站", description: "找到与指定网站相关的网站" },
-            cache: { name: "缓存", description: "查看网页的缓存版本" },
-            synonyms: { name: "同义词", description: "包含同义词在搜索结果中" },
-            numberRange: { name: "数字范围", description: "搜索特定数字范围，如：100..200" },
-            define: { name: "定义", description: "查询词语定义" },
-            calculator: { name: "计算器", description: "使用谷歌作为计算器，如：=2+2" },
-            unitConversion: { name: "单位转换", description: "进行单位转换，如：1 USD in CNY" },
-            scholarSearch: { 
-                name: "学术搜索", 
-                description: "在Google Scholar中搜索学术文献",
-                suggestion: "常用学术数据库：scholar.google.com, pubmed.ncbi.nlm.nih.gov, jstor.org"
+            exclude: {
+                name: "排除词",
+                description: "使用减号排除包含特定词的结果"
             },
-            newsSearch: { 
-                name: "新闻搜索", 
-                description: "搜索最新新闻",
-                suggestion: "热门新闻网站：news.google.com, reuters.com, bbc.com/news"
+            siteSearch: {
+                name: "站内搜索",
+                description: "在特定网站内搜索"
             },
-            imageSearch: { name: "图片搜索", description: "搜索相关图片" },
-            patentSearch: { 
-                name: "专利搜索", 
-                description: "搜索相关专利",
-                suggestion: "常用专利数据库：patents.google.com, uspto.gov, epo.org" },
-            trendSearch: { name: "趋势搜索", description: "查看搜索词的趋势" },
-            citationSearch: { name: "引用搜索", description: "查找引用特定文章的其他文章" },
-            hashtagSearch: { name: "话题标签搜索", description: "搜索特定话题标签" },
-            locationSearch: { name: "位置搜索", description: "搜索特定位置的信息" },
-            timeRangeSearch: { name: "时间范围搜索", description: "在特定时间范围内搜索" }
-        }
+            fileType: {
+                name: "文件类型",
+                description: "搜索特定类型的文件"
+            },
+            orSearch: {
+                name: "或搜索",
+                description: "搜索多个关键词的任意一个"
+            },
+            similarSites: {
+                name: "同类网站",
+                description: "使用多个免费API查找与输入网站相似的其他网站",
+                suggestion: "输入一个网站的URL，然后点击此按钮查找相似网站。"
+            },
+            scholarSearch: {
+                name: "学术搜索",
+                description: "在Google Scholar中搜索学术文献"
+            },
+            citationSearch: {
+                name: "引用搜索",
+                description: "查找引用特定文章的其他文章"
+            },
+            timeRangeSearch: {
+                name: "时间范围搜索",
+                description: "在特定时间范围内搜索"
+            },
+            define: {
+                name: "定义",
+                description: "查找词语或短语的定义"
+            },
+            patentSearch: {
+                name: "专利搜索",
+                description: "搜索相关专利"
+            },
+            numberRange: {
+                name: "数字范围",
+                description: "搜索特定数字范围内的结果"
+            },
+            calculator: {
+                name: "计算器",
+                description: "进行简单的数学计算"
+            },
+            trendSearch: {
+                name: "趋势搜索",
+                description: "查看特定主题的搜索趋势"
+            },
+            imageSearch: {
+                name: "图片搜索",
+                description: "搜索特定的图片"
+            },
+            locationSearch: {
+                name: "位置搜索",
+                description: "搜索特定位置的信息"
+            },
+            newsSearch: {
+                name: "新闻搜索",
+                description: "搜索最新新闻"
+            },
+            cache: {
+                name: "缓存",
+                description: "查看网页的缓存版本"
+            },
+            relatedSites: {
+                name: "相关网站",
+                description: "查找与特定网站相关的其他网站"
+            },
+            urlSearch: {
+                name: "URL搜索",
+                description: "搜索包含特定URL的页面"
+            },
+            hashtagSearch: {
+                name: "话题标签搜索",
+                description: "搜索特定话题标签的内容"
+            },
+            commonCrawl: {
+                name: "CommonCrawl 搜索",
+                description: "使用 CommonCrawl 索引搜索相关网站",
+                suggestion: "输入一个域名，然后点击此按钮查找相关网站。"
+            },
+            iconSearch: {
+                name: "图标搜索",
+                description: "快速搜索相关图标（自动添加 icon filetype:png）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关图标。支持其他格式如 filetype:jpg"
+            },
+            youtubeDownload: {
+                name: "YouTube下载",
+                description: "下载高清YouTube视频（自动转换为99x下载链接）",
+                suggestion: "输入YouTube视频链接，点击此按钮转到下载页面"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
+        },
+        invalidYoutubeUrl: "请输入有效的YouTube视频链接",
+        enterYoutubeUrl: "请输入YouTube视频链接"
     },
     en: {
         title: "Advanced Search Assistant",
@@ -118,8 +191,30 @@ const languages = {
             citationSearch: { name: "Citation Search", description: "Find other articles citing a specific article" },
             hashtagSearch: { name: "Hashtag Search", description: "Search for specific hashtags" },
             locationSearch: { name: "Location Search", description: "Search for information about a specific location" },
-            timeRangeSearch: { name: "Time Range Search", description: "Search within a specific time range" }
-        }
+            timeRangeSearch: { name: "Time Range Search", description: "Search within a specific time range" },
+            commonCrawl: {
+                name: "CommonCrawl Search",
+                description: "Search for related sites using CommonCrawl index",
+                suggestion: "Enter a domain name and click this button to find related sites."
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Enter keywords and click this button to quickly search for related icons"
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "Demand Search",
+                description: "Quickly search for related demands (automatically adds 'online' keyword)",
+                suggestion: "Enter keywords and click this button to quickly search for related demands"
+            }
+        },
+        invalidYoutubeUrl: "Please enter a valid YouTube video URL",
+        enterYoutubeUrl: "Please enter a YouTube video URL"
     },
     ja: {
         title: "高度な検索アシスタント",
@@ -144,7 +239,7 @@ const languages = {
             urlSearch: { name: "URL検索", description: "URLに特定の単語を含むページを検索します" },
             relatedSites: { name: "関連サイト", description: "特定のURLに関連するサイトを見つけます" },
             cache: { name: "キャッシュ", description: "ウェブページのキャッシュバージョンを表示します" },
-            synonyms: { name: "同義語", description: "検索結果に同義語を含めます" },
+            synonyms: { name: "義語", description: "検索結果に同義語を含めます" },
             numberRange: { name: "数値範囲", description: "数値の範囲を検索します。例：100..200" },
             define: { name: "定義", description: "単語の定義を調べます" },
             calculator: { name: "電卓", description: "Googleを電卓として使用します。例：=2+2" },
@@ -157,7 +252,27 @@ const languages = {
             citationSearch: { name: "引用検索", description: "特定の記事を引用した他の記事を見つける" },
             hashtagSearch: { name: "ハッシュタグ検索", description: "特定のハッシュタグを検索" },
             locationSearch: { name: "位置検索", description: "特定の位置に関する情報を検索" },
-            timeRangeSearch: { name: "時間範囲検索", description: "特定の時間範囲内で検索" }
+            timeRangeSearch: { name: "時間範囲検索", description: "特定の時間範囲内で検索" },
+            commonCrawl: {
+                name: "CommonCrawl 検索",
+                description: "CommonCrawl インデックスを使用して関連サイトを検索",
+                suggestion: "ドメイン名を入力してこのボタンをクリックして関連サイトを検索します。"
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Enter keywords and click this button to quickly search for related icons"
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
         }
     },
     es: {
@@ -196,7 +311,27 @@ const languages = {
             citationSearch: { name: "Búsqueda de Citas", description: "Buscar otros artículos que citan un artículo específico" },
             hashtagSearch: { name: "Búsqueda de Etiquetas de Hashtag", description: "Buscar etiquetas de hashtag específicas" },
             locationSearch: { name: "Búsqueda de Ubicación", description: "Buscar información sobre una ubicación específica" },
-            timeRangeSearch: { name: "Búsqueda de Rango de Tiempo", description: "Buscar dentro de un rango de tiempo específico" }
+            timeRangeSearch: { name: "Búsqueda de Rango de Tiempo", description: "Buscar dentro de un rango de tiempo específico" },
+            commonCrawl: {
+                name: "Búsqueda de CommonCrawl",
+                description: "Buscar sitios relacionados usando el índice de CommonCrawl",
+                suggestion: "Ingrese un nombre de dominio y haga clic en este botón para buscar sitios relacionados."
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Enter keywords and click this button to quickly search for related icons"
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
         }
     },
     ko: {
@@ -218,7 +353,7 @@ const languages = {
             fileType: { name: "파일 유형", description: "특정 파일 유형 검색, 예: filetype:pdf" },
             orSearch: { name: "OR 검색", description: "하나 또는 다른 용어 검색" },
             titleSearch: { name: "제목 검색", description: "제목에 특정 단어가 포함된 페이지 검색" },
-            bodySearch: { name: "본문 검색", description: "본문에 특정 단어가 포함된 페이지 검색" },
+            bodySearch: { name: "본문 검색", description: "본문에 특정 단어가 포함된 페이지 색" },
             urlSearch: { name: "URL 검색", description: "URL에 특정 단어가 포함된 페이지 검색" },
             relatedSites: { name: "관련 사이트", description: "특정 URL과 관련된 사이트 찾기" },
             cache: { name: "캐시", description: "웹 페이지의 캐시 버전 보기" },
@@ -233,9 +368,29 @@ const languages = {
             patentSearch: { name: "특허 검색", description: "관련된 특허 검색" },
             trendSearch: { name: "트렌드 검색", description: "검색 키워드의 트렌드 확인" },
             citationSearch: { name: "인용 검색", description: "특정 문헌을 인용한 다른 문헌 찾기" },
-            hashtagSearch: { name: "해시태그 검색", description: "특정 해시태그 검색" },
+            hashtagSearch: { name: "해시태그 검색", description: "특정 시태그 검색" },
             locationSearch: { name: "위치 검색", description: "특정 위치에 대한 정보 검색" },
-            timeRangeSearch: { name: "시간 범위 검색", description: "특정 시간 범위 내에서 검���" }
+            timeRangeSearch: { name: "시간 범위 검색", description: "특정 시간 범위 내에서 검" },
+            commonCrawl: {
+                name: "CommonCrawl 검색",
+                description: "CommonCrawl 인덱스를 사용하여 관련 사이트 검색",
+                suggestion: "도메인 이름을 입력하고 이 버튼을 클릭하여 관련 사이트를 검색할 수 있습니다."
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Enter keywords and click this button to quickly search for related icons"
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
         }
     },
     de: {
@@ -274,7 +429,27 @@ const languages = {
             citationSearch: { name: "Zitatsuche", description: "Suchen Sie andere Artikel, die einen bestimmten Artikel zitieren" },
             hashtagSearch: { name: "Hashtag-Suche", description: "Suche nach spezifischen Hashtags" },
             locationSearch: { name: "Standort-Suche", description: "Suche nach Informationen zu einer bestimmten Standort" },
-            timeRangeSearch: { name: "Zeitbereichssuche", description: "Suche innerhalb eines bestimmten Zeitbereichs" }
+            timeRangeSearch: { name: "Zeitbereichssuche", description: "Suche innerhalb eines bestimmten Zeitbereichs" },
+            commonCrawl: {
+                name: "CommonCrawl-Suche",
+                description: "Suche nach verwandten Websites mit CommonCrawl-Index",
+                suggestion: "Geben Sie einen Domainnamen ein und klicken Sie diesen Button, um verwandte Websites zu finden."
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Geben Sie einen Domainnamen ein und klicken Sie diesen Button, um verwandte Websites zu finden."
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
         }
     },
     fr: {
@@ -313,7 +488,27 @@ const languages = {
             citationSearch: { name: "Recherche de Citations", description: "Trouvez d'autres articles qui citent un article spécifique" },
             hashtagSearch: { name: "Recherche de Hashtags", description: "Recherchez des hashtags spécifiques" },
             locationSearch: { name: "Recherche de Lieux", description: "Recherchez des informations sur un lieu spécifique" },
-            timeRangeSearch: { name: "Recherche de Plage de Temps", description: "Recherchez à l'intérieur d'une plage de temps spécifique" }
+            timeRangeSearch: { name: "Recherche de Plage de Temps", description: "Recherchez à l'intérieur d'une plage de temps spécifique" },
+            commonCrawl: {
+                name: "Recherche de CommonCrawl",
+                description: "Recherchez des sites liés en utilisant l'index de CommonCrawl",
+                suggestion: "Entrez un nom de domaine et cliquez sur ce bouton pour trouver des sites liés."
+            },
+            iconSearch: {
+                name: "Icon Search",
+                description: "Quickly search for related icons (automatically adds 'icon png' keywords)",
+                suggestion: "Entrez un nom de domaine et cliquez sur ce bouton pour trouver des sites liés."
+            },
+            youtubeDownload: {
+                name: "YouTube Download",
+                description: "Download HD YouTube videos (converts to 99x download link)",
+                suggestion: "Enter YouTube video link and click this button to go to download page"
+            },
+            demandSearch: {
+                name: "需求搜索",
+                description: "快速搜索相关需求（自动添加 online 关键词）",
+                suggestion: "输入关键词，点击此按钮快速搜索相关需求"
+            }
         }
     }
 };

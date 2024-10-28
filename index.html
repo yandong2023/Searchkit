@@ -90,6 +90,9 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .file-type-menu button:hover {
+            background-color: #e0e0e0 !important;
+        }
     </style>
 </head>
 <body>
@@ -124,6 +127,11 @@
                 <option value="legalProfessional">法律专业人士</option>
             </select>
         </div>
+        <!-- 添加新的同类网站结果区域 -->
+        <div id="similarSitesResults" style="display: none;">
+            <h3>同类网站</h3>
+            <ul id="similarSitesList"></ul>
+        </div>
     </div>
 
     <script src="languages.js"></script>
@@ -153,39 +161,97 @@
         }
 
         function createToolButtons() {
-            toolsArea.innerHTML = searchTools.map(tool => 
-                `<button class="tool-button" onclick="applyTool('${tool.name}')" title="${languages[currentLanguage].tools[tool.name].description}">${languages[currentLanguage].tools[tool.name].name}</button>`
-            ).join('');
+            toolsArea.innerHTML = searchTools.map(tool => {
+        const toolInfo = languages[currentLanguage]?.tools?.[tool.name];
+        if (toolInfo) {
+            return `<button class="tool-button" onclick="applyTool('${tool.name}')" title="${toolInfo.description || ''}">${toolInfo.name || tool.name}</button>`;
+        } else {
+            console.warn(`Tool info not found for: ${tool.name} in language: ${currentLanguage}`);
+            return '';
+        }
+    }).join('');
         }
 
         function applyTool(toolName) {
-            const tool = searchTools.find(t => t.name === toolName);
-            if (tool) {
+            if (toolName === 'fileType') {
+                // 显示文件类型选择菜单
+                showFileTypeMenu();
+            } else if (toolName === 'similarSites') {
+                searchSimilarSites();
+            } else if (toolName === 'iconSearch') {
                 let currentValue = searchInput.value.trim();
-                if (tool.prefix) {
-                    if (!currentValue.startsWith(tool.prefix)) {
-                        const prefixesNeedingSpace = ['filetype:', 'site:', 'scholar:', 'news:', 'image:', 'patent:', 'trends:', 'cite:', 'location:', 'daterange:'];
-                        if (prefixesNeedingSpace.includes(tool.prefix)) {
-                            currentValue = tool.prefix + ' ' + currentValue;
-                        } else {
-                            currentValue = tool.prefix + currentValue;
-                        }
+                // 检查是否已经包含 filetype: 指令
+                if (!currentValue.includes('filetype:')) {
+                    if (!currentValue.endsWith(' icon')) {
+                        currentValue += ' icon';
                     }
-                }
-                if (tool.suffix && !currentValue.endsWith(tool.suffix)) {
-                    currentValue += tool.suffix;
-                }
-                if (tool.infix && !currentValue.includes(tool.infix)) {
-                    currentValue += tool.infix;
+                    currentValue += ' filetype:png';  // 这里不需要额外的空格，因为前面已经有了
+                } else if (!currentValue.includes(' icon ')) {
+                    // 如果已经有 filetype 但没有 icon 关键词
+                    const filetypePart = currentValue.substring(currentValue.indexOf('filetype:'));
+                    currentValue = currentValue.substring(0, currentValue.indexOf('filetype:'));
+                    currentValue = currentValue.trim() + ' icon ' + filetypePart;
                 }
                 searchInput.value = currentValue;
                 searchInput.focus();
-                
-                let tipText = languages[currentLanguage].tools[tool.name].description;
-                if (languages[currentLanguage].tools[tool.name].suggestion) {
-                    tipText += "<br><br>" + languages[currentLanguage].tools[tool.name].suggestion;
+                performSearch();
+            } else if (toolName === 'youtubeDownload') {
+                // 处理 YouTube 下载
+                let currentValue = searchInput.value.trim();
+                if (currentValue) {
+                    // 检查是否是有效的 YouTube URL
+                    if (currentValue.includes('youtube.com/') || currentValue.includes('youtu.be/')) {
+                        // 提取视频地址部分（去掉所有前缀）
+                        let videoUrl = currentValue;
+                        // 移除 http:// 或 https:// 和 www.
+                        videoUrl = videoUrl.replace(/^(https?:\/\/)?(www\.)?/, '');
+                        
+                        // 构建新的下载链接（直接添加9x前缀）
+                        const downloadUrl = '9x' + videoUrl;
+                        window.open('https://' + downloadUrl, '_blank');
+                    } else {
+                        alert(languages[currentLanguage].invalidYoutubeUrl);
+                    }
+                } else {
+                    alert(languages[currentLanguage].enterYoutubeUrl);
                 }
-                updateTip(tipText);
+            } else if (toolName === 'demandSearch') {
+                let currentValue = searchInput.value.trim();
+                if (!currentValue.endsWith(' online')) {
+                    currentValue += ' online';
+                }
+                searchInput.value = currentValue;
+                searchInput.focus();
+                performSearch();
+            } else {
+                const tool = searchTools.find(t => t.name === toolName);
+                if (tool) {
+                    let currentValue = searchInput.value.trim();
+                    if (tool.prefix) {
+                        if (!currentValue.startsWith(tool.prefix)) {
+                            const prefixesNeedingSpace = ['filetype:', 'site:', 'scholar:', 'news:', 'image:', 'patent:', 'trends:', 'cite:', 'location:', 'daterange:'];
+                            if (prefixesNeedingSpace.includes(tool.prefix)) {
+                                currentValue = tool.prefix + ' ' + currentValue;
+                            } else {
+                                currentValue = tool.prefix + currentValue;
+                            }
+                        }
+                    }
+                    if (tool.suffix && !currentValue.endsWith(tool.suffix)) {
+                        currentValue += tool.suffix;
+                    }
+                    if (tool.infix && !currentValue.includes(tool.infix)) {
+                        currentValue += tool.infix;
+                    }
+                    searchInput.value = currentValue;
+                    searchInput.focus();
+                    
+                    let tipText = languages[currentLanguage].tools[tool.name].description;
+                    if (languages[currentLanguage].tools[tool.name].suggestion) {
+                        tipText += "<br><br>" + languages[currentLanguage].tools[tool.name].suggestion;
+                    }
+                    updateTip(tipText);
+                }
             }
         }
 
@@ -219,7 +285,7 @@
         }
 
         function getToolsForUserType(userType) {
-            const commonTools = ["exactMatch", "exclude", "siteSearch", "fileType", "orSearch"];
+            const commonTools = ["exactMatch", "exclude", "siteSearch", "fileType", "orSearch", "similarSites", "iconSearch", "youtubeDownload", "demandSearch"];
             switch(userType) {
                 case "researcher":
                     return [...commonTools, "scholarSearch", "citationSearch", "timeRangeSearch", "define", "patentSearch"];
@@ -239,7 +305,10 @@
         function createToolButtonsForUserType(tools) {
             toolsArea.innerHTML = tools.map(toolName => {
                 const tool = languages[currentLanguage].tools[toolName];
-                return `<button class="tool-button" onclick="applyTool('${toolName}')" title="${tool.description}">${tool.name}</button>`;
+                if (tool) {
+                    return `<button class="tool-button" onclick="applyTool('${toolName}')" title="${tool.description || ''}">${tool.name || toolName}</button>`;
+                }
+                return ''; // 如果工具不存在，返回空字符串
             }).join('');
         }
 
@@ -253,6 +322,281 @@
                 performSearch();
             }
         });
+
+        // 添加新的函数来处理同类网站搜索
+        async function searchSimilarSites() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) {
+                alert(languages[currentLanguage].enterWebsiteUrl);
+                return;
+            }
+
+            const domain = query.replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
+            let similarSites = [];
+
+            // 1. 尝试预定义类别搜索
+            similarSites = getPredefinedSimilarSites(domain);
+            if (similarSites.length > 0) {
+                displaySimilarSites(similarSites);
+                return;
+            }
+
+            // 2. 尝试 SimilarWeb API (需要 API 密钥)
+            similarSites = await searchSimilarWeb(domain);
+            if (similarSites.length > 0) {
+                displaySimilarSites(similarSites);
+                return;
+            }
+
+            // 3. 尝试 Wikipedia API
+            similarSites = await searchWikipedia(domain);
+            if (similarSites.length > 0) {
+                displaySimilarSites(similarSites);
+                return;
+            }
+
+            // 4. 尝试 CommonCrawl 搜索
+            similarSites = await searchCommonCrawl(domain);
+            if (similarSites.length > 0) {
+                displaySimilarSites(similarSites);
+                return;
+            }
+
+            // 5. 如果都没有结果，显示一个友好的消息
+            displaySimilarSites([{ name: '没有找到相似网站', url: '#' }]);
+        }
+
+        async function searchSimilarWeb(domain) {
+            // 注意：这需要一个有效的 SimilarWeb API 密钥
+            const apiKey = 'YOUR_SIMILARWEB_API_KEY';
+            const url = `https://api.similarweb.com/v1/similar-sites/${domain}?api_key=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data.similar_sites.map(site => ({
+                    name: site,
+                    url: `http://${site}`
+                }));
+            } catch (error) {
+                console.error('Error fetching from SimilarWeb:', error);
+                return [];
+            }
+        }
+
+        async function searchWikipedia(domain) {
+            const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${domain}&limit=10&namespace=0&format=json&origin=*`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data[1].map((title, index) => ({
+                    name: title,
+                    url: data[3][index]
+                })).filter(site => !site.url.includes('wikipedia.org'));
+            } catch (error) {
+                console.error('Error fetching from Wikipedia:', error);
+                return [];
+            }
+        }
+
+        async function searchCommonCrawl(domain) {
+            const index = 'CC-MAIN-2023-14'; // 使用最新的引
+            const url = `https://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                const lines = text.trim().split('\n');
+                const results = lines.map(line => {
+                    const data = JSON.parse(line);
+                    return {
+                        name: new URL(data.url).hostname,
+                        url: data.url
+                    };
+                });
+                // 只返回前10个唯一的结果
+                return Array.from(new Set(results.map(r => r.name)))
+                    .slice(0, 10)
+                    .map(name => results.find(r => r.name === name));
+            } catch (error) {
+                console.error('Error fetching from CommonCrawl:', error);
+                return [];
+            }
+        }
+
+        function getPredefinedSimilarSites(domain) {
+            const predefinedSites = {
+                'hupu.com': [
+                    { name: '虎扑', url: 'https://www.hupu.com' },
+                    { name: '直播吧', url: 'https://www.zhibo8.cc' },
+                    { name: '腾讯体育', url: 'https://sports.qq.com' },
+                    { name: '新浪体育', url: 'https://sports.sina.com.cn' },
+                    { name: '搜狐体育', url: 'https://sports.sohu.com' }
+                ],
+                'zhihu.com': [
+                    { name: '知乎', url: 'https://www.zhihu.com' },
+                    { name: 'Quora', url: 'https://www.quora.com' },
+                    { name: '百度知道', url: 'https://zhidao.baidu.com' },
+                    { name: '豆瓣', url: 'https://www.douban.com' },
+                    { name: 'Stack Exchange', url: 'https://stackexchange.com' }
+                ],
+                'baidu.com': [
+                    { name: '百度', url: 'https://www.baidu.com' },
+                    { name: 'Google', url: 'https://www.google.com' },
+                    { name: 'Bing', url: 'https://www.bing.com' },
+                    { name: '搜狗', url: 'https://www.sogou.com' },
+                    { name: '360搜索', url: 'https://www.so.com' }
+                ],
+                'taobao.com': [
+                    { name: '淘宝', url: 'https://www.taobao.com' },
+                    { name: '京东', url: 'https://www.jd.com' },
+                    { name: '天猫', url: 'https://www.tmall.com' },
+                    { name: '亚马逊中', url: 'https://www.amazon.cn' },
+                    { name: '苏宁易购', url: 'https://www.suning.com' }
+                ],
+                'weibo.com': [
+                    { name: '微博', url: 'https://www.weibo.com' },
+                    { name: 'Twitter', url: 'https://twitter.com' },
+                    { name: 'Facebook', url: 'https://www.facebook.com' },
+                    { name: '豆瓣', url: 'https://www.douban.com' },
+                    { name: '人人网', url: 'http://www.renren.com' }
+                ]
+            };
+            return predefinedSites[domain] || [];
+        }
+
+        function displaySimilarSites(sites) {
+            const similarSitesList = document.getElementById('similarSitesList');
+            similarSitesList.innerHTML = '';
+
+            if (sites.length === 0) {
+                similarSitesList.innerHTML = '<li>No similar sites found.</li>';
+            } else {
+                sites.forEach(site => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = site.url;
+                    a.textContent = site.name;
+                    a.target = '_blank';
+                    li.appendChild(a);
+                    similarSitesList.appendChild(li);
+                });
+            }
+
+            document.getElementById('similarSitesResults').style.display = 'block';
+        }
+
+        // 添加提取 YouTube 视频 ID 的辅助函数
+        function extractYoutubeVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 为新按钮添加事件监听器
+        // document.getElementById('similarSitesBtn').addEventListener('click', searchSimilarSites);
+
+        // 添加文件类型选择菜单的函数
+        function showFileTypeMenu() {
+            const fileTypes = {
+                '文档类': ['pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx', 'xls', 'xlsx'],
+                '图片类': ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'],
+                '音视频类': ['mp3', 'mp4', 'avi', 'mov', 'wmv'],
+                '压缩包': ['zip', 'rar', '7z'],
+                '其他': ['csv', 'json', 'xml', 'html']
+            };
+
+            // 创建菜单容器
+            const menu = document.createElement('div');
+            menu.className = 'file-type-menu';
+            menu.style.position = 'absolute';
+            menu.style.backgroundColor = 'white';
+            menu.style.border = '1px solid #ccc';
+            menu.style.borderRadius = '4px';
+            menu.style.padding = '10px';
+            menu.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+            menu.style.zIndex = '1000';
+
+            // 添加类别和文件类型
+            Object.entries(fileTypes).forEach(([category, types]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'file-type-category';
+                categoryDiv.style.marginBottom = '10px';
+
+                const categoryTitle = document.createElement('div');
+                categoryTitle.textContent = category;
+                categoryTitle.style.fontWeight = 'bold';
+                categoryTitle.style.marginBottom = '5px';
+                categoryDiv.appendChild(categoryTitle);
+
+                const typesContainer = document.createElement('div');
+                typesContainer.style.display = 'flex';
+                typesContainer.style.flexWrap = 'wrap';
+                typesContainer.style.gap = '5px';
+
+                types.forEach(type => {
+                    const typeButton = document.createElement('button');
+                    typeButton.textContent = type;
+                    typeButton.style.padding = '2px 8px';
+                    typeButton.style.border = '1px solid #ddd';
+                    typeButton.style.borderRadius = '3px';
+                    typeButton.style.cursor = 'pointer';
+                    typeButton.style.backgroundColor = '#f5f5f5';
+
+                    typeButton.onclick = () => {
+                        const currentValue = searchInput.value.trim();
+                        // 移除已存在的 filetype: 指令
+                        const cleanValue = currentValue.replace(/\s*filetype:\w+/g, '');
+                        // 确保在 filetype: 和文件类型之间没有空格
+                        searchInput.value = `${cleanValue.trim()} filetype:${type}`.trim();
+                        menu.remove();
+                        searchInput.focus();
+                    };
+
+                    typesContainer.appendChild(typeButton);
+                });
+
+                categoryDiv.appendChild(typesContainer);
+                menu.appendChild(categoryDiv);
+            });
+
+            // 添加关闭按钮
+            const closeButton = document.createElement('button');
+            closeButton.textContent = '×';
+            closeButton.style.position = 'absolute';
+            closeButton.style.right = '5px';
+            closeButton.style.top = '5px';
+            closeButton.style.border = 'none';
+            closeButton.style.background = 'none';
+            closeButton.style.cursor = 'pointer';
+            closeButton.style.fontSize = '20px';
+            closeButton.onclick = () => menu.remove();
+            menu.appendChild(closeButton);
+
+            // 将菜单添加到页面
+            const toolsArea = document.getElementById('toolsArea');
+            const rect = toolsArea.getBoundingClientRect();
+            menu.style.left = `${rect.left}px`;
+            menu.style.top = `${rect.bottom + 5}px`;
+            document.body.appendChild(menu);
+
+            // 点击其他地方关闭菜单
+            document.addEventListener('click', function closeMenu(e) {
+                if (!menu.contains(e.target) && e.target.className !== 'tool-button') {
+                    menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
     </script>
 </body>
 </html>
