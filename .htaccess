@@ -1,0 +1,32 @@
+# 启用重写引擎
+RewriteEngine On
+
+# 如果请求的不是文件
+RewriteCond %{REQUEST_FILENAME} !-f
+# 如果请求的不是目录
+RewriteCond %{REQUEST_FILENAME} !-d
+# 重写规则，将请求重定向到对应目录下的index.html
+RewriteRule ^(.*)$ $1/index.html [L]
+
+# 设置默认文档
+DirectoryIndex index.html
+
+# 设置字符编码
+AddDefaultCharset UTF-8
+
+# 启用压缩
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
+</IfModule>
+
+# 设置缓存控制
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType text/javascript "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>

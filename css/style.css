@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #4285F4;
+    text-align: center;
+}
+
+#searchArea {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+}
+
+#searchButton {
+    padding: 10px 20px;
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#searchButton:hover {
+    background-color: #357AE8;
+}
+
+#toolsArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tool-button {
+    padding: 5px 10px;
+    background-color: #f1f3f4;
+    color: #202124;
+    border: 1px solid #dadce0;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.tool-button:hover {
+    background-color: #e8f0fe;
+}
+
+#tipArea {
+    background-color: #e8f0fe;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+#searchEngineSelect, #languageSelect {
+    margin-right: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#userTypeArea {
+    margin-bottom: 10px;
+}
+
+#userTypeSelect {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 语言切换器样式 */
+.language-switcher {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.language-switcher a {
+    display: inline-block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.language-switcher a:hover {
+    background-color: #f0f0f0;
+    color: #4285F4;
+}
+
+.language-switcher a.active {
+    background-color: #4285F4;
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    #searchArea {
+        flex-direction: column;
+    }
+    
+    #searchInput, #searchButton, #searchEngineSelect {
+        width: 100%;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    
+    .language-switcher {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .language-switcher a {
+        margin: 2px;
+    }
+}

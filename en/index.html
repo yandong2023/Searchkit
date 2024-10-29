@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search Assistant</title>
+    <meta name="description" content="Professional search tool assistant to help you better search the web">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- 添加语言版本链接标记 -->
+    <link rel="alternate" hreflang="zh" href="/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
+</head>
+<body>
+    <div class="container">
+        <div class="language-switcher">
+            <a href="/">中文</a>
+            <a href="/en/" class="active">English</a>
+            <a href="/ja/">日本語</a>
+            <a href="/es/">Español</a>
+            <a href="/ko/">한국어</a>
+            <a href="/de/">Deutsch</a>
+            <a href="/fr/">Français</a>
+        </div>
+        
+        <h1 id="title">Advanced Search Assistant</h1>
+        <div id="searchArea">
+            <select id="searchEngineSelect">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="baidu">Baidu</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Enter search terms...">
+            <button id="searchButton" onclick="performSearch()">Search</button>
+        </div>
+        <div id="toolsArea"></div>
+        <div id="tipArea"></div>
+        <div id="userTypeArea">
+            <select id="userTypeSelect" onchange="updateToolsForUserType()">
+                <option value="researcher">Academic Researcher</option>
+                <option value="dataAnalyst">Data Analyst</option>
+                <option value="investigativeJournalist">Investigative Journalist</option>
+                <option value="marketResearcher">Market Researcher</option>
+                <option value="legalProfessional">Legal Professional</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,258 +1,61 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高级搜索助手</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #4285F4;
-            text-align: center;
-        }
-        #searchArea {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        #searchInput {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
-            font-size: 16px;
-        }
-        #searchButton {
-            padding: 10px 20px;
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #searchButton:hover {
-            background-color: #357AE8;
-        }
-        #toolsArea {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tool-button {
-            padding: 5px 10px;
-            background-color: #f1f3f4;
-            color: #202124;
-            border: 1px solid #dadce0;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        .tool-button:hover {
-            background-color: #e8f0fe;
-        }
-        #tipArea {
-            background-color: #e8f0fe;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        #searchEngineSelect, #languageSelect {
-            margin-right: 10px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        #userTypeArea {
-            margin-bottom: 10px;
-        }
-        #userTypeSelect {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-    </style>
+    <title>SearchKit - Advanced Search Assistant | Professional Search Tools</title>
+    <meta name="description" content="SearchKit helps you search smarter with advanced search operators, filters and professional tools. Perfect for researchers, analysts, and professionals.">
+    <meta name="keywords" content="search assistant, advanced search, search tools, google search, research tools, searchkit, professional search">
+    <!-- 修改CSS路径 -->
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- 语言版本链接标记 -->
+    <link rel="alternate" hreflang="zh" href="./zh/index.html" />
+    <link rel="alternate" hreflang="ja" href="./ja/index.html" />
+    <link rel="alternate" hreflang="es" href="./es/index.html" />
+    <link rel="alternate" hreflang="ko" href="./ko/index.html" />
+    <link rel="alternate" hreflang="de" href="./de/index.html" />
+    <link rel="alternate" hreflang="fr" href="./fr/index.html" />
+    <link rel="alternate" hreflang="en" href="./" />
+    <link rel="alternate" hreflang="x-default" href="./" />
 </head>
 <body>
     <div class="container">
-        <h1 id="title">高级搜索助手</h1>
+        <div class="language-switcher">
+            <a href="./zh/">中文</a>
+            <a href="./" class="active">English</a>
+            <a href="./ja/">日本語</a>
+            <a href="./es/">Español</a>
+            <a href="./ko/">한국어</a>
+            <a href="./de/">Deutsch</a>
+            <a href="./fr/">Français</a>
+        </div>
+        
+        <h1 id="title">Advanced Search Assistant</h1>
         <div id="searchArea">
-            <select id="languageSelect" onchange="changeLanguage()">
-                <option value="zh">中文</option>
-                <option value="en">English</option>
-                <option value="ja">日本語</option>
-                <option value="es">Español</option>
-                <option value="ko">한국어</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-            </select>
             <select id="searchEngineSelect">
                 <option value="google">Google</option>
                 <option value="bing">Bing</option>
                 <option value="baidu">Baidu</option>
             </select>
-            <input type="text" id="searchInput" placeholder="输入搜索词...">
-            <button id="searchButton" onclick="performSearch()">搜索</button>
+            <input type="text" id="searchInput" placeholder="Enter search terms...">
+            <button id="searchButton" onclick="performSearch()">Search</button>
         </div>
         <div id="toolsArea"></div>
         <div id="tipArea"></div>
         <div id="userTypeArea">
             <select id="userTypeSelect" onchange="updateToolsForUserType()">
-                <option value="researcher">学术研究者</option>
-                <option value="dataAnalyst">数据分析师</option>
-                <option value="investigativeJournalist">调查记者</option>
-                <option value="marketResearcher">市场研究员</option>
-                <option value="legalProfessional">法律专业人士</option>
+                <option value="general">General User</option>
+                <option value="researcher">Academic Researcher</option>
+                <option value="dataAnalyst">Data Analyst</option>
+                <option value="investigativeJournalist">Investigative Journalist</option>
+                <option value="marketResearcher">Market Researcher</option>
+                <option value="legalProfessional">Legal Professional</option>
             </select>
         </div>
     </div>
 
-    <script src="languages.js"></script>
-    <script>
-        let currentLanguage = 'zh';
-
-        const searchInput = document.getElementById('searchInput');
-        const searchEngineSelect = document.getElementById('searchEngineSelect');
-        const toolsArea = document.getElementById('toolsArea');
-        const tipArea = document.getElementById('tipArea');
-
-        function changeLanguage() {
-            currentLanguage = document.getElementById('languageSelect').value;
-            updateInterface();
-        }
-
-        function updateInterface() {
-            document.getElementById('title').textContent = languages[currentLanguage].title;
-            searchInput.placeholder = languages[currentLanguage].searchPlaceholder;
-            document.getElementById('searchButton').textContent = languages[currentLanguage].searchButton;
-            updateTip(languages[currentLanguage].defaultTip);
-            createToolButtons();
-            document.getElementById('userTypeSelect').innerHTML = Object.entries(languages[currentLanguage].userTypes)
-                .map(([value, label]) => `<option value="${value}">${label}</option>`)
-                .join('');
-            updateToolsForUserType();
-        }
-
-        function createToolButtons() {
-            toolsArea.innerHTML = searchTools.map(tool => 
-                `<button class="tool-button" onclick="applyTool('${tool.name}')" title="${languages[currentLanguage].tools[tool.name].description}">${languages[currentLanguage].tools[tool.name].name}</button>`
-            ).join('');
-        }
-
-        function applyTool(toolName) {
-            const tool = searchTools.find(t => t.name === toolName);
-            if (tool) {
-                let currentValue = searchInput.value.trim();
-                if (tool.prefix) {
-                    if (!currentValue.startsWith(tool.prefix)) {
-                        const prefixesNeedingSpace = ['filetype:', 'site:', 'scholar:', 'news:', 'image:', 'patent:', 'trends:', 'cite:', 'location:', 'daterange:'];
-                        if (prefixesNeedingSpace.includes(tool.prefix)) {
-                            currentValue = tool.prefix + ' ' + currentValue;
-                        } else {
-                            currentValue = tool.prefix + currentValue;
-                        }
-                    }
-                }
-                if (tool.suffix && !currentValue.endsWith(tool.suffix)) {
-                    currentValue += tool.suffix;
-                }
-                if (tool.infix && !currentValue.includes(tool.infix)) {
-                    currentValue += tool.infix;
-                }
-                searchInput.value = currentValue;
-                searchInput.focus();
-                
-                let tipText = languages[currentLanguage].tools[tool.name].description;
-                if (languages[currentLanguage].tools[tool.name].suggestion) {
-                    tipText += "<br><br>" + languages[currentLanguage].tools[tool.name].suggestion;
-                }
-                updateTip(tipText);
-            }
-        }
-
-        function updateTip(description) {
-            tipArea.innerHTML = `${languages[currentLanguage].tipPrefix}${description}`;
-        }
-
-        function performSearch() {
-            const query = encodeURIComponent(searchInput.value);
-            const searchEngine = searchEngineSelect.value;
-            let searchUrl;
-
-            switch(searchEngine) {
-                case 'bing':
-                    searchUrl = `https://www.bing.com/search?q=${query}`;
-                    break;
-                case 'baidu':
-                    searchUrl = `https://www.baidu.com/s?wd=${query}`;
-                    break;
-                default:
-                    searchUrl = `https://www.google.com/search?q=${query}`;
-            }
-
-            window.open(searchUrl, '_blank');
-        }
-
-        function updateToolsForUserType() {
-            const userType = document.getElementById('userTypeSelect').value;
-            const tools = getToolsForUserType(userType);
-            createToolButtonsForUserType(tools);
-        }
-
-        function getToolsForUserType(userType) {
-            const commonTools = ["exactMatch", "exclude", "siteSearch", "fileType", "orSearch"];
-            switch(userType) {
-                case "researcher":
-                    return [...commonTools, "scholarSearch", "citationSearch", "timeRangeSearch", "define", "patentSearch"];
-                case "dataAnalyst":
-                    return [...commonTools, "numberRange", "calculator", "trendSearch", "imageSearch", "locationSearch"];
-                case "investigativeJournalist":
-                    return [...commonTools, "newsSearch", "cache", "relatedSites", "timeRangeSearch", "urlSearch"];
-                case "marketResearcher":
-                    return [...commonTools, "trendSearch", "newsSearch", "locationSearch", "hashtagSearch", "imageSearch"];
-                case "legalProfessional":
-                    return [...commonTools, "scholarSearch", "citationSearch", "define", "cache", "timeRangeSearch"];
-                default:
-                    return searchTools.map(tool => tool.name);
-            }
-        }
-
-        function createToolButtonsForUserType(tools) {
-            toolsArea.innerHTML = tools.map(toolName => {
-                const tool = languages[currentLanguage].tools[toolName];
-                return `<button class="tool-button" onclick="applyTool('${toolName}')" title="${tool.description}">${tool.name}</button>`;
-            }).join('');
-        }
-
-        // 初始化
-        updateInterface();
-        searchInput.addEventListener('input', () => updateTip(languages[currentLanguage].defaultTip));
-
-        // 添加回车键搜索功能
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-    </script>
+    <!-- 修改JS路径 -->
+    <script src="./js/languages.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
