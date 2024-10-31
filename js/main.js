@@ -39,12 +39,9 @@ function applyTool(toolName) {
     if (tool && languages[currentLanguage].tools[toolName]) {
         let currentValue = searchInput.value.trim();
         
-        // 处理前缀
+        // 处理前缀 - 移除了需要空格的数组，确保所有操作符后直接连接值
         if (tool.prefix && !currentValue.startsWith(tool.prefix)) {
-            const prefixesNeedingSpace = ['filetype:', 'site:', 'scholar:', 'cite:', 'daterange:'];
-            currentValue = prefixesNeedingSpace.includes(tool.prefix) 
-                ? tool.prefix + ' ' + currentValue 
-                : tool.prefix + currentValue;
+            currentValue = tool.prefix + currentValue;
         }
         
         // 处理后缀
@@ -56,6 +53,9 @@ function applyTool(toolName) {
         if (tool.infix && !currentValue.includes(tool.infix)) {
             currentValue += tool.infix;
         }
+        
+        // 清理搜索字符串中的多余空格
+        currentValue = currentValue.replace(/(\w+):\s+/g, '$1:');
         
         searchInput.value = currentValue;
         searchInput.focus();
@@ -74,9 +74,11 @@ function updateTip(description) {
     tipArea.innerHTML = `${languages[currentLanguage].tipPrefix}${description}`;
 }
 
-// 执行搜索
+// 执行搜索前清理搜索字符串
 function performSearch() {
-    const query = encodeURIComponent(searchInput.value);
+    // 清理搜索字符串中的多余空格
+    const cleanedQuery = searchInput.value.replace(/(\w+):\s+/g, '$1:');
+    const query = encodeURIComponent(cleanedQuery);
     const searchEngine = searchEngineSelect.value;
     let searchUrl;
 
