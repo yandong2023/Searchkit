@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchKit - 고급 검색 도우미 | 전문 검색 도구</title>
+    <meta name="description" content="SearchKit은 연구원, 분석가 및 전문가를 위한 고급 검색 연산자, 필터 및 전문 도구를 제공하는 검색 도우미입니다.">
+    <meta name="keywords" content="검색 도우미,고급 검색,검색 도구,구글 검색,연구 도구,searchkit,전문 검색">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 语言版本链接标记 -->
+    <link rel="alternate" hreflang="en" href="../" />
+    <link rel="alternate" hreflang="zh" href="../zh/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="ko" href="../ko/" />
+    <link rel="alternate" hreflang="x-default" href="../" />
+</head>
+<body>
+    <div class="container">
+        <div class="language-switcher">
+            <a href="../zh/">中文</a>
+            <a href="../">English</a>
+            <a href="../ja/">日本語</a>
+            <a href="../es/">Español</a>
+            <a href="../ko/" class="active">한국어</a>
+            <a href="../de/">Deutsch</a>
+            <a href="../fr/">Français</a>
+        </div>
+        
+        <h1 id="title">고급 검색 도우미</h1>
+        <div id="searchArea">
+            <select id="searchEngineSelect">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="baidu">Baidu</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="검색어를 입력하세요...">
+            <button id="searchButton" onclick="performSearch()">검색</button>
+        </div>
+        <div id="toolsArea"></div>
+        <div id="tipArea"></div>
+        <div id="userTypeArea">
+            <select id="userTypeSelect" onchange="updateToolsForUserType()">
+                <option value="general">일반 사용자</option>
+                <option value="researcher">학술 연구원</option>
+                <option value="dataAnalyst">데이터 분석가</option>
+                <option value="investigativeJournalist">탐사 기자</option>
+                <option value="marketResearcher">시장 조사원</option>
+                <option value="legalProfessional">법률 전문가</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="../js/languages.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

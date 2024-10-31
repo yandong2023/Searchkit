@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchKit - Asistente de Búsqueda Avanzada | Herramientas de Búsqueda Profesional</title>
+    <meta name="description" content="SearchKit ofrece operadores de búsqueda avanzada, filtros y herramientas profesionales para investigadores, analistas y profesionales.">
+    <meta name="keywords" content="asistente de búsqueda,búsqueda avanzada,herramientas de búsqueda,búsqueda google,herramientas de investigación,searchkit">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 语言版本链接标记 -->
+    <link rel="alternate" hreflang="en" href="../" />
+    <link rel="alternate" hreflang="zh" href="../zh/" />
+    <link rel="alternate" hreflang="ja" href="../ja/" />
+    <link rel="alternate" hreflang="ko" href="../ko/" />
+    <link rel="alternate" hreflang="de" href="../de/" />
+    <link rel="alternate" hreflang="fr" href="../fr/" />
+    <link rel="alternate" hreflang="es" href="../es/" />
+    <link rel="alternate" hreflang="x-default" href="../" />
+</head>
+<body>
+    <div class="container">
+        <div class="language-switcher">
+            <a href="../zh/">中文</a>
+            <a href="../">English</a>
+            <a href="../ja/">日本語</a>
+            <a href="../es/" class="active">Español</a>
+            <a href="../ko/">한국어</a>
+            <a href="../de/">Deutsch</a>
+            <a href="../fr/">Français</a>
+        </div>
+        
+        <h1 id="title">Asistente de Búsqueda Avanzada</h1>
+        <div id="searchArea">
+            <select id="searchEngineSelect">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="baidu">Baidu</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Ingrese términos de búsqueda...">
+            <button id="searchButton" onclick="performSearch()">Buscar</button>
+        </div>
+        <div id="toolsArea"></div>
+        <div id="tipArea"></div>
+        <div id="userTypeArea">
+            <select id="userTypeSelect" onchange="updateToolsForUserType()">
+                <option value="general">Usuario general</option>
+                <option value="researcher">Investigador académico</option>
+                <option value="dataAnalyst">Analista de datos</option>
+                <option value="investigativeJournalist">Periodista investigador</option>
+                <option value="marketResearcher">Investigador de mercado</option>
+                <option value="legalProfessional">Profesional legal</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="../js/languages.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
