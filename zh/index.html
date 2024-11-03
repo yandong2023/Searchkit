@@ -1,42 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SearchKit - 专业搜索工具集</title>
-    <meta name="description" content="SearchKit为您提供强大的搜索工具，包括高级搜索运算符、筛选器和专业工具，适合研究人员、分析师和专业人士使用。">
-    <meta name="keywords" content="搜索助手,高级搜索,搜索工具,谷歌搜索,必应搜索,百度搜索,研究工具,searchkit,专业搜索">
-    <!-- 修改CSS路径 -->
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- 语言版本链接标记 -->
-    <link rel="alternate" hreflang="en" href="../" />
-    <link rel="alternate" hreflang="ja" href="../ja/" />
-    <link rel="alternate" hreflang="es" href="../es/" />
-    <link rel="alternate" hreflang="ko" href="../ko/" />
-    <link rel="alternate" hreflang="de" href="../de/" />
-    <link rel="alternate" hreflang="fr" href="../fr/" />
-    <link rel="alternate" hreflang="zh" href="../zh/" />
-    <link rel="alternate" hreflang="x-default" href="../" />
+    <title>SearchKit - 高级搜索助手 | 专业搜索工具</title>
+    <meta name="description" content="SearchKit 为研究人员、分析师和专业人士提供高级搜索运算符、过滤器和专业工具。">
+    <meta name="keywords" content="搜索助手,高级搜索,搜索工具,谷歌搜索,研究工具,searchkit,专业搜索">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="alternate" hreflang="zh" href="/zh/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
 </head>
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="../zh/" class="active">中文</a>
-            <a href="../">English</a>
-            <a href="../ja/">日本語</a>
-            <a href="../es/">Español</a>
-            <a href="../ko/">한국어</a>
-            <a href="../de/">Deutsch</a>
-            <a href="../fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh" selected>中文</option>
+                <option value="ja">日本語</option>
+                <option value="es">Español</option>
+                <option value="ko">한국어</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
-        <h1 id="title">SearchKit</h1>
+        
+        <h1 id="title">高级搜索助手</h1>
         <div id="searchArea">
             <select id="searchEngineSelect">
                 <option value="google">Google</option>
                 <option value="bing">Bing</option>
                 <option value="baidu">百度</option>
             </select>
-            <input type="text" id="searchInput" placeholder="输入搜索词...">
+            <input type="text" id="searchInput" placeholder="输入搜索关键词...">
             <button id="searchButton" onclick="performSearch()">搜索</button>
         </div>
         <div id="toolsArea"></div>
@@ -52,9 +53,8 @@
             </select>
         </div>
     </div>
-    
-    <!-- 修改JS路径 -->
-    <script src="../js/languages.js"></script>
-    <script src="../js/main.js"></script>
+
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>

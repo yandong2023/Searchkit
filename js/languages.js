@@ -137,6 +137,11 @@ const languages = {
                 name: "CommonCrawl Search",
                 description: "Search CommonCrawl database",
                 suggestion: 'Use cc: operator to search CommonCrawl'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "Tip: "
@@ -177,7 +182,7 @@ const languages = {
             },
             orSearch: {
                 name: "或搜索",
-                description: "搜索任一关键词",
+                description: "搜索���一关键词",
                 suggestion: '使用OR连接词语，例如：词1 OR 词2'
             },
             scholarSearch: {
@@ -279,6 +284,11 @@ const languages = {
                 name: "CommonCrawl搜索",
                 description: "搜索CommonCrawl数据库",
                 suggestion: '使用cc:运算符搜索CommonCrawl'
+            },
+            keywordExplorer: {
+                name: "关键词拓展",
+                description: "探索相关关键词和变体",
+                suggestion: "点击打开关键词拓展工具"
             }
         },
         tipPrefix: "提示："
@@ -338,7 +348,7 @@ const languages = {
                 suggestion: 'daterange:演算子または時間フィルターを使用'
             },
             relatedSites: {
-                name: "関連サイト",
+                name: "関���サイト",
                 description: "類似のウェブサイトを検索",
                 suggestion: 'related:演算子を使用。例：related:example.com'
             },
@@ -421,6 +431,11 @@ const languages = {
                 name: "CommonCrawl検索",
                 description: "CommonCrawlデータベースを検索",
                 suggestion: 'cc:演算子を使用してCommonCrawlを検索'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "ヒント："
@@ -445,7 +460,7 @@ const languages = {
                 suggestion: '구문을 따옴표로 묶으세. 예: "정확한 구문"'
             },
             exclude: {
-                name: "제외",
+                name: "외",
                 description: "특정 단어 제외",
                 suggestion: '제외할 단어 앞에 마이너스 기호를 붙이세요. 예: -제외어'
             },
@@ -563,6 +578,11 @@ const languages = {
                 name: "CommonCrawl 검색",
                 description: "CommonCrawl 데이터베이스 검색",
                 suggestion: 'cc: 연산자를 사용하여 CommonCrawl 검색'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "팁: "
@@ -705,6 +725,11 @@ const languages = {
                 name: "Búsqueda CommonCrawl",
                 description: "Buscar en la base de datos CommonCrawl",
                 suggestion: 'Use el operador cc: para buscar en CommonCrawl'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "Consejo: "
@@ -847,6 +872,11 @@ const languages = {
                 name: "CommonCrawl-Suche",
                 description: "CommonCrawl-Datenbank durchsuchen",
                 suggestion: 'Verwenden Sie den Operator cc: um CommonCrawl zu durchsuchen'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "Tip: "
@@ -989,6 +1019,11 @@ const languages = {
                 name: "CommonCrawl Search",
                 description: "Search CommonCrawl database",
                 suggestion: 'Use cc: operator to search CommonCrawl'
+            },
+            keywordExplorer: {
+                name: "Keyword Explorer",
+                description: "Explore related keywords and variations",
+                suggestion: "Click to open keyword exploration tool"
             }
         },
         tipPrefix: "Conseil: "
@@ -1098,6 +1133,155 @@ const searchTools = [
         prefix: "cc:"
     }
 ];
+
+// 在 explorerTranslations 中添加其他语言的翻译
+const explorerTranslations = {
+    en: {
+        title: "Keyword Explorer",
+        inputPlaceholder: "Enter a keyword to explore...",
+        exploreButton: "Explore",
+        backLink: "← Back to Search",
+        categoryNames: {
+            base: 'Basic Suggestions',
+            alphabet: 'A-Z Combinations',
+            comparison: 'Comparisons & Alternatives',
+            action: 'Actions & Tutorials',
+            attribute: 'Attributes & Quality',
+            time: 'Time & Versions',
+            feature: 'Features & Settings',
+            question: 'Questions & Queries',
+            download: 'Downloads & Installation',
+            review: 'Reviews & Ratings',
+            problem: 'Problems & Solutions',
+            business: 'Business & Pricing'
+        }
+    },
+    zh: {
+        title: "关键词拓展",
+        inputPlaceholder: "输入关键词进行探索...",
+        exploreButton: "探索",
+        backLink: "← 返回搜索",
+        categoryNames: {
+            base: '基础建议',
+            alphabet: '字母组合',
+            comparison: '比较与替代',
+            action: '操作与教程',
+            attribute: '属性与质量',
+            time: '时间与版本',
+            feature: '功能与设置',
+            question: '问题与查询',
+            download: '下载与安装',
+            review: '评价与评分',
+            problem: '问题与解决',
+            business: '商业与定价'
+        }
+    },
+    ja: {
+        title: "キーワードエクスプローラー",
+        inputPlaceholder: "キーワードを入力して探索...",
+        exploreButton: "探索",
+        backLink: "← 検索に戻る",
+        categoryNames: {
+            base: '基本的な提案',
+            alphabet: 'アルファベット組み合わせ',
+            comparison: '比較と代替',
+            action: '操作とチュートリアル',
+            attribute: '属性と品質',
+            time: '時間とバージョン',
+            feature: '機能と設定',
+            question: '質問とクエリ',
+            download: 'ダウンロードとインストール',
+            review: 'レビューと評価',
+            problem: '問題と解決',
+            business: 'ビジネスと価格'
+        }
+    },
+    ko: {
+        title: "키워드 탐색기",
+        inputPlaceholder: "키워드를 입력하여 탐색...",
+        exploreButton: "탐색",
+        backLink: "← 검색으로 돌아가기",
+        categoryNames: {
+            base: '기본 제안',
+            alphabet: '알파벳 조합',
+            comparison: '비교 및 대안',
+            action: '작업 및 튜토리얼',
+            attribute: '속성 및 품질',
+            time: '시간 및 버전',
+            feature: '기능 및 설정',
+            question: '질문 및 쿼리',
+            download: '다운로드 및 설치',
+            review: '리뷰 및 평가',
+            problem: '문제 및 해결',
+            business: '비즈니스 및 가격'
+        }
+    },
+    es: {
+        title: "Explorador de Palabras Clave",
+        inputPlaceholder: "Ingrese una palabra clave para explorar...",
+        exploreButton: "Explorar",
+        backLink: "← Volver a Búsqueda",
+        categoryNames: {
+            base: 'Sugerencias Básicas',
+            alphabet: 'Combinaciones A-Z',
+            comparison: 'Comparaciones y Alternativas',
+            action: 'Acciones y Tutoriales',
+            attribute: 'Atributos y Calidad',
+            time: 'Tiempo y Versiones',
+            feature: 'Características y Configuración',
+            question: 'Preguntas y Consultas',
+            download: 'Descargas e Instalación',
+            review: 'Reseñas y Calificaciones',
+            problem: 'Problemas y Soluciones',
+            business: 'Negocios y Precios'
+        }
+    },
+    de: {
+        title: "Keyword-Explorer",
+        inputPlaceholder: "Geben Sie ein Keyword ein...",
+        exploreButton: "Erkunden",
+        backLink: "← Zurück zur Suche",
+        categoryNames: {
+            base: 'Grundlegende Vorschläge',
+            alphabet: 'A-Z Kombinationen',
+            comparison: 'Vergleiche & Alternativen',
+            action: 'Aktionen & Tutorials',
+            attribute: 'Attribute & Qualität',
+            time: 'Zeit & Versionen',
+            feature: 'Funktionen & Einstellungen',
+            question: 'Fragen & Abfragen',
+            download: 'Downloads & Installation',
+            review: 'Bewertungen & Ratings',
+            problem: 'Probleme & Lösungen',
+            business: 'Business & Preise'
+        }
+    },
+    fr: {
+        title: "Explorateur de Mots-clés",
+        inputPlaceholder: "Entrez un mot-clé à explorer...",
+        exploreButton: "Explorer",
+        backLink: "← Retour à la Recherche",
+        categoryNames: {
+            base: 'Suggestions de Base',
+            alphabet: 'Combinaisons A-Z',
+            comparison: 'Comparaisons et Alternatives',
+            action: 'Actions et Tutoriels',
+            attribute: 'Attributs et Qualité',
+            time: 'Temps et Versions',
+            feature: 'Fonctionnalités et Paramètres',
+            question: 'Questions et Requêtes',
+            download: 'Téléchargements et Installation',
+            review: 'Avis et Évaluations',
+            problem: 'Problèmes et Solutions',
+            business: 'Business et Prix'
+        }
+    }
+};
+
+// 将 explorerTranslations 添加到现有的 languages 对象中
+Object.keys(languages).forEach(lang => {
+    languages[lang].explorer = explorerTranslations[lang] || explorerTranslations.en;
+});
 
 // 导出模块
 if (typeof module !== 'undefined' && module.exports) {

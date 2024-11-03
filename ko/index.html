@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SearchKit - 고급 검색 도우미 | 전문 검색 도구</title>
-    <meta name="description" content="SearchKit은 연구원, 분석가 및 전문가를 위한 고급 검색 연산자, 필터 및 전문 도구를 제공하는 검색 도우미입니다.">
+    <meta name="description" content="SearchKit은 연구원, 분석가 및 전문가를 위한 고급 검색 연산자, 필터 및 전문 도구를 제공합니다.">
     <meta name="keywords" content="검색 도우미,고급 검색,검색 도구,구글 검색,연구 도구,searchkit,전문 검색">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- 语言版本链接标记 -->
-    <link rel="alternate" hreflang="en" href="../" />
-    <link rel="alternate" hreflang="zh" href="../zh/" />
-    <link rel="alternate" hreflang="ja" href="../ja/" />
-    <link rel="alternate" hreflang="es" href="../es/" />
-    <link rel="alternate" hreflang="de" href="../de/" />
-    <link rel="alternate" hreflang="fr" href="../fr/" />
-    <link rel="alternate" hreflang="ko" href="../ko/" />
-    <link rel="alternate" hreflang="x-default" href="../" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="alternate" hreflang="zh" href="/zh/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
 </head>
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="../zh/">中文</a>
-            <a href="../">English</a>
-            <a href="../ja/">日本語</a>
-            <a href="../es/">Español</a>
-            <a href="../ko/" class="active">한국어</a>
-            <a href="../de/">Deutsch</a>
-            <a href="../fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="es">Español</option>
+                <option value="ko" selected>한국어</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
         
         <h1 id="title">고급 검색 도우미</h1>
@@ -53,7 +54,7 @@
         </div>
     </div>
 
-    <script src="../js/languages.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>

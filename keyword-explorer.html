@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Explorer - SearchKit</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <a href="/" id="backLink" class="nav-link">← Back to Search</a>
+            <div class="language-switcher">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="es">Español</option>
+                    <option value="ko">한국어</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
+        </nav>
+
+        <h1 id="explorerTitle">Keyword Explorer</h1>
+        
+        <div class="explorer-container">
+            <div class="search-box">
+                <input type="text" id="keywordInput" placeholder="Enter a keyword to explore...">
+                <button id="exploreButton" onclick="exploreKeywords()">Explore</button>
+            </div>
+            <div id="keywordResults" class="keyword-results"></div>
+        </div>
+    </div>
+
+    <script src="js/languages.js"></script>
+    <script src="js/keyword-explorer.js"></script>
+</body>
+</html> 

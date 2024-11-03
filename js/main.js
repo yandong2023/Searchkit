@@ -25,16 +25,52 @@ function updateInterface() {
 
 // 创建工具按钮
 function createToolButtons() {
+    // 定义高频工具列表
+    const highFrequencyTools = [
+        "exactMatch",      // 精确配（最基础常用）
+        "siteSearch",      // 站内搜索（常用）
+        "fileType",        // 文件类型（常用）
+        "keywordExplorer"  // 关键词拓展（市场研究必备）
+    ];
+
+    // 定义专业功能工具列表
+    const proFeatureTools = [
+        "scholarSearch",   // 学术搜索
+        "patentSearch",    // 专利搜索
+        "trendSearch"      // 趋势分析
+    ];
+
     toolsArea.innerHTML = searchTools
         .filter(tool => languages[currentLanguage].tools[tool.name])
-        .map(tool => 
-            `<button class="tool-button" onclick="applyTool('${tool.name}')" 
-             title="${languages[currentLanguage].tools[tool.name].description}">${languages[currentLanguage].tools[tool.name].name}</button>`
-        ).join('');
+        .map(tool => {
+            let className = 'tool-button';
+            if (highFrequencyTools.includes(tool.name)) {
+                className += ' high-frequency';
+            } else if (proFeatureTools.includes(tool.name)) {
+                className += ' pro-feature';
+            }
+            
+            return `<button class="${className}" 
+                    onclick="applyTool('${tool.name}')" 
+                    title="${languages[currentLanguage].tools[tool.name].description}">
+                        ${languages[currentLanguage].tools[tool.name].name}
+                    </button>`;
+        }).join('');
 }
 
 // 应用搜索工具
 function applyTool(toolName) {
+    if (toolName === 'keywordExplorer') {
+        const currentLang = getCurrentLanguage();
+        window.location.href = `/keyword-explorer.html?lang=${currentLang}`;
+        return;
+    }
+
+    if (toolName === 'fileType') {
+        showFileTypeSelector();
+        return;
+    }
+    
     const tool = searchTools.find(t => t.name === toolName);
     if (tool && languages[currentLanguage].tools[toolName]) {
         let currentValue = searchInput.value.trim();
@@ -151,7 +187,7 @@ function getToolsForUserType(userType) {
             ...commonTools,
             "trendSearch", "newsSearch", "locationSearch", "hashtagSearch",
             "imageSearch", "similarSites", "iconSearch", "youtubeDownload",
-            "demandSearch"
+            "demandSearch", "keywordExplorer"
         ],
         
         // 法律专业人士
@@ -193,6 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
             performSearch();
         }
     });
+    
+    // 设置语言选择器的初始值
+    const currentLang = getCurrentLanguage();
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.value = currentLang;
+    }
 });
 
 // 在处理搜索操作符时，确保冒号后没有空格
@@ -204,4 +247,113 @@ function formatSearchOperator(operator, value) {
 function buildSearchQuery(searchTerm) {
     // 示例：将 "site: searchkit.cc" 转换为 "site:searchkit.cc"
     return searchTerm.replace(/(\w+):\s+/g, '$1:');
+}
+
+// 在现有代中添加语言切换函数
+function changeLanguage(lang) {
+    // 根据选择的语言重定向到相应的页面
+    const currentPath = window.location.pathname;
+    const newPath = lang === 'en' ? '/' : `/${lang}/`;
+    
+    if (currentPath !== newPath) {
+        window.location.href = newPath;
+    }
+}
+
+// 在现有代码中添加文件类型配置
+const FILE_TYPES = {
+    document: {
+        name: 'Documents',
+        types: [
+            { ext: 'pdf', icon: '📄', name: 'PDF' },
+            { ext: 'doc,docx', icon: '📝', name: 'Word' },
+            { ext: 'xls,xlsx', icon: '📊', name: 'Excel' },
+            { ext: 'ppt,pptx', icon: '📽️', name: 'PowerPoint' },
+            { ext: 'txt', icon: '📋', name: 'Text' }
+        ]
+    },
+    media: {
+        name: 'Media',
+        types: [
+            { ext: 'jpg,jpeg', icon: '🖼️', name: 'JPEG' },
+            { ext: 'png', icon: '🖼️', name: 'PNG' },
+            { ext: 'gif', icon: '🎞️', name: 'GIF' },
+            { ext: 'mp4', icon: '🎥', name: 'MP4' },
+            { ext: 'mp3', icon: '🎵', name: 'MP3' }
+        ]
+    },
+    code: {
+        name: 'Code',
+        types: [
+            { ext: 'html,htm', icon: '🌐', name: 'HTML' },
+            { ext: 'css', icon: '🎨', name: 'CSS' },
+            { ext: 'js', icon: '⚡', name: 'JavaScript' },
+            { ext: 'py', icon: '🐍', name: 'Python' },
+            { ext: 'java', icon: '☕', name: 'Java' }
+        ]
+    }
+};
+
+// 添加文件类型选择器的显示函数
+function showFileTypeSelector() {
+    // 创建模态框
+    const modal = document.createElement('div');
+    modal.className = 'file-type-modal';
+    
+    // 创建模态框内容
+    modal.innerHTML = `
+        <div class="file-type-content">
+            <div class="file-type-header">
+                <h3>${languages[currentLanguage].tools.fileType.name}</h3>
+                <button class="close-button" onclick="closeFileTypeModal()">×</button>
+            </div>
+            <div class="file-type-body">
+                ${Object.entries(FILE_TYPES).map(([category, data]) => `
+                    <div class="file-type-category">
+                        <h4>${data.name}</h4>
+                        <div class="file-type-grid">
+                            ${data.types.map(type => `
+                                <button class="file-type-button" onclick="selectFileType('${type.ext}')">
+                                    <span class="file-type-icon">${type.icon}</span>
+                                    <span class="file-type-name">${type.name}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // 添加点击外部关闭功能
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeFileTypeModal();
+        }
+    });
+}
+
+// 关闭文件类型选择器
+function closeFileTypeModal() {
+    const modal = document.querySelector('.file-type-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// 选择文件类型
+function selectFileType(ext) {
+    const searchInput = document.getElementById('searchInput');
+    const currentValue = searchInput.value.trim();
+    
+    // 移除已有的 filetype: 操作符
+    const cleanValue = currentValue.replace(/filetype:\S+\s*/g, '').trim();
+    
+    // 添加新的文件类型
+    searchInput.value = `filetype:${ext} ${cleanValue}`;
+    
+    closeFileTypeModal();
+    searchInput.focus();
 }

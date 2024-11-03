@@ -19,13 +19,15 @@
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="/zh/">中文</a>
-            <a href="/">English</a>
-            <a href="/ja/">日本語</a>
-            <a href="/es/">Español</a>
-            <a href="/ko/">한국어</a>
-            <a href="/de/" class="active">Deutsch</a>
-            <a href="/fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="es">Español</option>
+                <option value="ko">한국어</option>
+                <option value="de" selected>Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
         
         <h1 id="title">Erweiterter Suchassisstent</h1>

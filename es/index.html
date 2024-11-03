@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SearchKit - Asistente de Búsqueda Avanzada | Herramientas de Búsqueda Profesional</title>
-    <meta name="description" content="SearchKit ofrece operadores de búsqueda avanzada, filtros y herramientas profesionales para investigadores, analistas y profesionales.">
-    <meta name="keywords" content="asistente de búsqueda,búsqueda avanzada,herramientas de búsqueda,búsqueda google,herramientas de investigación,searchkit">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- 语言版本链接标记 -->
-    <link rel="alternate" hreflang="en" href="../" />
-    <link rel="alternate" hreflang="zh" href="../zh/" />
-    <link rel="alternate" hreflang="ja" href="../ja/" />
-    <link rel="alternate" hreflang="ko" href="../ko/" />
-    <link rel="alternate" hreflang="de" href="../de/" />
-    <link rel="alternate" hreflang="fr" href="../fr/" />
-    <link rel="alternate" hreflang="es" href="../es/" />
-    <link rel="alternate" hreflang="x-default" href="../" />
+    <meta name="description" content="SearchKit proporciona operadores de búsqueda avanzados, filtros y herramientas profesionales para investigadores, analistas y profesionales.">
+    <meta name="keywords" content="asistente de búsqueda,búsqueda avanzada,herramientas de búsqueda,búsqueda google,herramientas de investigación,searchkit,búsqueda profesional">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="alternate" hreflang="zh" href="/zh/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
 </head>
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="../zh/">中文</a>
-            <a href="../">English</a>
-            <a href="../ja/">日本語</a>
-            <a href="../es/" class="active">Español</a>
-            <a href="../ko/">한국어</a>
-            <a href="../de/">Deutsch</a>
-            <a href="../fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="es" selected>Español</option>
+                <option value="ko">한국어</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
         
         <h1 id="title">Asistente de Búsqueda Avanzada</h1>
@@ -43,17 +44,17 @@
         <div id="tipArea"></div>
         <div id="userTypeArea">
             <select id="userTypeSelect" onchange="updateToolsForUserType()">
-                <option value="general">Usuario general</option>
-                <option value="researcher">Investigador académico</option>
-                <option value="dataAnalyst">Analista de datos</option>
-                <option value="investigativeJournalist">Periodista investigador</option>
-                <option value="marketResearcher">Investigador de mercado</option>
-                <option value="legalProfessional">Profesional legal</option>
+                <option value="general">Usuario General</option>
+                <option value="researcher">Investigador Académico</option>
+                <option value="dataAnalyst">Analista de Datos</option>
+                <option value="investigativeJournalist">Periodista Investigador</option>
+                <option value="marketResearcher">Investigador de Mercado</option>
+                <option value="legalProfessional">Profesional Legal</option>
             </select>
         </div>
     </div>
 
-    <script src="../js/languages.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>

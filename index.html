@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SearchKit - Advanced Search Assistant | Professional Search Tools</title>
-    <meta name="description" content="SearchKit helps you search smarter with advanced search operators, filters and professional tools. Perfect for researchers, analysts, and professionals.">
-    <meta name="keywords" content="search assistant, advanced search, search tools, google search, research tools, searchkit, professional search">
-    <!-- 修改CSS路径 -->
-    <link rel="stylesheet" href="./css/style.css">
-    <!-- 语言版本链接标记 -->
-    <link rel="alternate" hreflang="zh" href="./zh/index.html" />
-    <link rel="alternate" hreflang="ja" href="./ja/index.html" />
-    <link rel="alternate" hreflang="es" href="./es/index.html" />
-    <link rel="alternate" hreflang="ko" href="./ko/index.html" />
-    <link rel="alternate" hreflang="de" href="./de/index.html" />
-    <link rel="alternate" hreflang="fr" href="./fr/index.html" />
-    <link rel="alternate" hreflang="en" href="./" />
-    <link rel="alternate" hreflang="x-default" href="./" />
+    <meta name="description" content="SearchKit provides advanced search operators, filters and professional tools for researchers, analysts and professionals.">
+    <meta name="keywords" content="search assistant,advanced search,search tools,google search,research tools,searchkit,professional search">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="alternate" hreflang="zh" href="/zh/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
 </head>
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="./zh/">中文</a>
-            <a href="./" class="active">English</a>
-            <a href="./ja/">日本語</a>
-            <a href="./es/">Español</a>
-            <a href="./ko/">한국어</a>
-            <a href="./de/">Deutsch</a>
-            <a href="./fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en" selected>English</option>
+                <option value="zh">中文</option>
+                <option value="ja">日本語</option>
+                <option value="es">Español</option>
+                <option value="ko">한국어</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
         
         <h1 id="title">Advanced Search Assistant</h1>
@@ -52,15 +52,9 @@
                 <option value="legalProfessional">Legal Professional</option>
             </select>
         </div>
-        <!-- 添加新的同类网站结果区域 -->
-        <div id="similarSitesResults" style="display: none;">
-            <h3>同类网站</h3>
-            <ul id="similarSitesList"></ul>
-        </div>
     </div>
 
-    <!-- 修改JS路径 -->
-    <script src="./js/languages.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="js/languages.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

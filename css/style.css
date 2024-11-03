@@ -97,30 +97,29 @@ h1 {
     border-radius: 4px;
 }
 
-/* 语言切换器样式 */
+/* 修改语言切换器样式 */
 .language-switcher {
     text-align: right;
     margin-bottom: 20px;
 }
 
-.language-switcher a {
-    display: inline-block;
-    padding: 5px 10px;
-    text-decoration: none;
-    color: #666;
-    border-radius: 3px;
-    margin-left: 5px;
+.language-switcher select {
+    padding: 8px 12px;
     font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
 }
 
-.language-switcher a:hover {
-    background-color: #f0f0f0;
-    color: #4285F4;
+.language-switcher select:hover {
+    border-color: #4285F4;
 }
 
-.language-switcher a.active {
-    background-color: #4285F4;
-    color: white;
+.language-switcher select:focus {
+    outline: none;
+    border-color: #4285F4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
 }
 
 /* 响应式设计 */
@@ -143,4 +142,292 @@ h1 {
     .language-switcher a {
         margin: 2px;
     }
+}
+
+/* 在现有样式后添加 */
+.explorer-container {
+    margin: 20px 0;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.keyword-category {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.keyword-category h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.keyword-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.keyword-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.keyword-item:hover {
+    background-color: #f5f5f5;
+}
+
+.keyword-number {
+    min-width: 30px;
+    color: #666;
+    font-size: 14px;
+}
+
+.keyword-link {
+    flex: 1;
+    color: #1a0dab;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.keyword-link:hover {
+    text-decoration: underline;
+}
+
+.keyword-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #f44336;
+}
+
+.back-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-link a {
+    color: #666;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    color: #4285F4;
+}
+
+/* 添加到现有样式中 */
+.keyword-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+/* 添加顶部导航栏样式 */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-link {
+    color: #4285F4;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-link:hover {
+    color: #1a73e8;
+}
+
+/* 调整语言切换器在导航栏中的样式 */
+.top-nav .language-switcher {
+    margin: 0;
+}
+
+/* 确保内容区域有足够的上边距 */
+.explorer-container {
+    margin-top: 30px;
+}
+
+/* 添加高频工具的样式 */
+.tool-button.high-frequency {
+    background-color: #fef3f2;  /* 浅红色背��� */
+    border: 1px solid #fecdca;  /* 红色边框 */
+    color: #d92d20;            /* 红色文字 */
+    font-weight: 500;          /* 加粗 */
+    position: relative;        /* 用于添加标记 */
+}
+
+.tool-button.high-frequency:hover {
+    background-color: #fee4e2;
+}
+
+.tool-button.high-frequency::after {
+    content: "★";             /* 星号标记 */
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    font-size: 12px;
+    color: #d92d20;
+}
+
+/* 为不同类型的高频工具添加不同的样式 */
+.tool-button.pro-feature {
+    background-color: #f0f9ff;  /* 浅蓝色背景 */
+    border: 1px solid #b9e6fe;  /* 蓝色边框 */
+    color: #0369a1;            /* 蓝色文字 */
+    font-weight: 500;
+}
+
+.tool-button.pro-feature:hover {
+    background-color: #e0f2fe;
+}
+
+.tool-button.pro-feature::after {
+    content: "PRO";
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    font-size: 10px;
+    background: #0369a1;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+/* 文件类型选择器样式 */
+.file-type-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.file-type-content {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.file-type-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-type-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.file-type-body {
+    padding: 20px;
+}
+
+.file-type-category {
+    margin-bottom: 20px;
+}
+
+.file-type-category h4 {
+    margin: 0 0 10px 0;
+    color: #666;
+}
+
+.file-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.file-type-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.file-type-button:hover {
+    background: #f5f5f5;
+    border-color: #4285F4;
+}
+
+.file-type-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.file-type-name {
+    font-size: 12px;
+    color: #333;
 }

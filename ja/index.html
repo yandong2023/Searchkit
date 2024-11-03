@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SearchKit - 高度な検索アシスタント | プロフェッショナル検索ツール</title>
-    <meta name="description" content="SearchKitは研究者、アナリスト、専門家向けの高度な検索演算子、フィルター、プロフェッショナルツールを提供する検索支援ツールです。">
-    <meta name="keywords" content="検索アシスタント,高度な検索,検索ツール,Google検索,研究ツール,searchkit,プロ検索">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- 语言版本链接标记 -->
-    <link rel="alternate" hreflang="en" href="../" />
-    <link rel="alternate" hreflang="zh" href="../zh/" />
-    <link rel="alternate" hreflang="es" href="../es/" />
-    <link rel="alternate" hreflang="ko" href="../ko/" />
-    <link rel="alternate" hreflang="de" href="../de/" />
-    <link rel="alternate" hreflang="fr" href="../fr/" />
-    <link rel="alternate" hreflang="ja" href="../ja/" />
-    <link rel="alternate" hreflang="x-default" href="../" />
+    <meta name="description" content="SearchKit は研究者、アナリスト、専門家向けの高度な検索演算子、フィルター、プロフェッショナルツールを提供します。">
+    <meta name="keywords" content="検索アシスタント,高度な検索,検索ツール,グーグル検索,研究ツール,searchkit,プロフェッショナル検索">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" hreflang="en" href="/" />
+    <link rel="alternate" hreflang="zh" href="/zh/" />
+    <link rel="alternate" hreflang="ja" href="/ja/" />
+    <link rel="alternate" hreflang="es" href="/es/" />
+    <link rel="alternate" hreflang="ko" href="/ko/" />
+    <link rel="alternate" hreflang="fr" href="/fr/" />
+    <link rel="alternate" hreflang="de" href="/de/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
 </head>
 <body>
     <div class="container">
         <div class="language-switcher">
-            <a href="../zh/">中文</a>
-            <a href="../">English</a>
-            <a href="../ja/" class="active">日本語</a>
-            <a href="../es/">Español</a>
-            <a href="../ko/">한국어</a>
-            <a href="../de/">Deutsch</a>
-            <a href="../fr/">Français</a>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+                <option value="ja" selected>日本語</option>
+                <option value="es">Español</option>
+                <option value="ko">한국어</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </select>
         </div>
         
         <h1 id="title">高度な検索アシスタント</h1>
@@ -53,7 +54,7 @@
         </div>
     </div>
 
-    <script src="../js/languages.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="/js/languages.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
