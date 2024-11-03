@@ -182,7 +182,7 @@ const languages = {
             },
             orSearch: {
                 name: "或搜索",
-                description: "搜索���一关键词",
+                description: "搜索一关键词",
                 suggestion: '使用OR连接词语，例如：词1 OR 词2'
             },
             scholarSearch: {
@@ -348,7 +348,7 @@ const languages = {
                 suggestion: 'daterange:演算子または時間フィルターを使用'
             },
             relatedSites: {
-                name: "関���サイト",
+                name: "関サイト",
                 description: "類似のウェブサイトを検索",
                 suggestion: 'related:演算子を使用。例：related:example.com'
             },
@@ -530,7 +530,7 @@ const languages = {
                 suggestion: 'news: 연산자를 사용하여 뉴스 검색'
             },
             trendSearch: {
-                name: "트렌드",
+                name: "���렌드",
                 description: "인기 주제 검색",
                 suggestion: 'trends: 연산자를 사용하여 트렌드 확인'
             },
@@ -1140,7 +1140,7 @@ const explorerTranslations = {
         title: "Keyword Explorer",
         inputPlaceholder: "Enter a keyword to explore...",
         exploreButton: "Explore",
-        backLink: "← Back to Search",
+        backLink: "← Back to SearchKit",
         categoryNames: {
             base: 'Basic Suggestions',
             alphabet: 'A-Z Combinations',
@@ -1160,7 +1160,7 @@ const explorerTranslations = {
         title: "关键词拓展",
         inputPlaceholder: "输入关键词进行探索...",
         exploreButton: "探索",
-        backLink: "← 返回搜索",
+        backLink: "← 返回 SearchKit",
         categoryNames: {
             base: '基础建议',
             alphabet: '字母组合',
@@ -1180,7 +1180,7 @@ const explorerTranslations = {
         title: "キーワードエクスプローラー",
         inputPlaceholder: "キーワードを入力して探索...",
         exploreButton: "探索",
-        backLink: "← 検索に戻る",
+        backLink: "← SearchKit に戻る",
         categoryNames: {
             base: '基本的な提案',
             alphabet: 'アルファベット組み合わせ',
@@ -1200,7 +1200,7 @@ const explorerTranslations = {
         title: "키워드 탐색기",
         inputPlaceholder: "키워드를 입력하여 탐색...",
         exploreButton: "탐색",
-        backLink: "← 검색으로 돌아가기",
+        backLink: "← SearchKit으로 돌아가기",
         categoryNames: {
             base: '기본 제안',
             alphabet: '알파벳 조합',
@@ -1220,7 +1220,7 @@ const explorerTranslations = {
         title: "Explorador de Palabras Clave",
         inputPlaceholder: "Ingrese una palabra clave para explorar...",
         exploreButton: "Explorar",
-        backLink: "← Volver a Búsqueda",
+        backLink: "← Volver a SearchKit",
         categoryNames: {
             base: 'Sugerencias Básicas',
             alphabet: 'Combinaciones A-Z',
@@ -1240,7 +1240,7 @@ const explorerTranslations = {
         title: "Keyword-Explorer",
         inputPlaceholder: "Geben Sie ein Keyword ein...",
         exploreButton: "Erkunden",
-        backLink: "← Zurück zur Suche",
+        backLink: "← Zurück zu SearchKit",
         categoryNames: {
             base: 'Grundlegende Vorschläge',
             alphabet: 'A-Z Kombinationen',
@@ -1260,7 +1260,7 @@ const explorerTranslations = {
         title: "Explorateur de Mots-clés",
         inputPlaceholder: "Entrez un mot-clé à explorer...",
         exploreButton: "Explorer",
-        backLink: "← Retour à la Recherche",
+        backLink: "← Retour à SearchKit",
         categoryNames: {
             base: 'Suggestions de Base',
             alphabet: 'Combinaisons A-Z',

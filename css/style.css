@@ -297,7 +297,7 @@ h1 {
 
 /* 添加高频工具的样式 */
 .tool-button.high-frequency {
-    background-color: #fef3f2;  /* 浅红色背��� */
+    background-color: #fef3f2;  /* 浅红色背 */
     border: 1px solid #fecdca;  /* 红色边框 */
     color: #d92d20;            /* 红色文字 */
     font-weight: 500;          /* 加粗 */
@@ -430,4 +430,87 @@ h1 {
 .file-type-name {
     font-size: 12px;
     color: #333;
+}
+
+/* 移动设备适配样式 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .top-nav {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .search-box {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box input,
+    .search-box button {
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .keyword-list {
+        grid-template-columns: 1fr;
+    }
+
+    .keyword-item {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .keyword-number {
+        min-width: 24px;
+        font-size: 12px;
+    }
+
+    .language-switcher select {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* 确保按钮足够大，便于触摸 */
+    button {
+        min-height: 44px;
+        padding: 10px 15px;
+    }
+
+    /* 调整输入框大小 */
+    input[type="text"] {
+        padding: 12px;
+        font-size: 16px; /* 防止 iOS 自动缩放 */
+    }
+
+    /* 优化分类标题显示 */
+    .keyword-category h3 {
+        padding: 10px 0;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    /* 调整链接点击区域 */
+    .keyword-link {
+        padding: 8px 0;
+        display: block;
+    }
+}
+
+/* 添加触摸设备的悬停效果替代 */
+@media (hover: none) {
+    .keyword-item:active {
+        background-color: #f0f0f0;
+    }
+
+    .keyword-link:active {
+        color: #4285F4;
+    }
 }

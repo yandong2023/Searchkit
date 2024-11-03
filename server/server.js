@@ -5,7 +5,12 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: '*',  // 允许所有来源
+    methods: ['GET', 'POST', 'OPTIONS'],  // 允许的 HTTP 方法
+    allowedHeaders: ['Content-Type', 'Authorization'],  // 允许的请求头
+    credentials: true  // 允许发送凭证
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
@@ -110,9 +115,16 @@ async function getCategorySuggestions(keyword, terms) {
                 method: 'get',
                 url: `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(`${keyword} ${term}`)}`,
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+                    'Accept': '*/*',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Connection': 'keep-alive',
+                    'Cache-Control': 'no-cache'
                 },
-                timeout: 5000
+                timeout: 10000,
+                validateStatus: function (status) {
+                    return status >= 200 && status < 300;
+                }
             });
             
             if (response.data && Array.isArray(response.data[1])) {
@@ -120,6 +132,10 @@ async function getCategorySuggestions(keyword, terms) {
             }
         } catch (error) {
             console.error(`Error getting suggestions for ${keyword} ${term}:`, error.message);
+            if (error.response) {
+                console.error('Response status:', error.response.status);
+                console.error('Response data:', error.response.data);
+            }
         }
     }));
 
@@ -133,13 +149,24 @@ async function getBingSuggestions(keyword) {
             method: 'get',
             url: `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(keyword)}`,
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+                'Accept': '*/*',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Connection': 'keep-alive',
+                'Cache-Control': 'no-cache'
             },
-            timeout: 5000
+            timeout: 10000,  // 增加超时时间
+            validateStatus: function (status) {
+                return status >= 200 && status < 300;
+            }
         });
         return response.data[1] || [];
     } catch (error) {
         console.error('Error in getBingSuggestions:', error);
+        if (error.response) {
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
         return [];
     }
 }
@@ -180,5 +207,15 @@ process.on('SIGTERM', () => {
     server.close(() => {
         console.log('Server closed');
         process.exit(0);
+    });
+});
+
+// 添加错误处理中间件
+app.use((err, req, res, next) => {
+    console.error('Global error handler:', err);
+    res.status(500).json({
+        error: 'Internal server error',
+        message: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
     });
 }); 
