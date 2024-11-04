@@ -2,6 +2,18 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/suggestions.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/suggestions",
+      "dest": "/api/suggestions.js"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
