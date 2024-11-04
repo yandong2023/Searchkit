@@ -94,43 +94,59 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+    // 处理 OPTIONS 请求
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     const { keyword } = req.query;
     
     if (!keyword) {
-        return res.status(400).json({ error: 'Keyword is required' });
+        return res.status(400).json({
+            success: false,
+            error: 'Keyword is required'
+        });
     }
 
     try {
         // 获取所有分类的建议
         const categorizedResults = {};
         
-        // 并行获取所有分类的建议
-        const promises = Object.entries(KEYWORD_CATEGORIES).map(async ([category, terms]) => {
-            const suggestions = await getCategorySuggestions(keyword, terms);
-            if (suggestions.length > 0) {
-                categorizedResults[category] = suggestions;
-            }
-        });
-
-        await Promise.all(promises);
-
         // 获取基础建议
         const baseSuggestions = await getBingSuggestions(keyword);
         if (baseSuggestions.length > 0) {
             categorizedResults.base = baseSuggestions;
         }
 
-        res.json({
+        // 并行获取所有分类的建议
+        const promises = Object.entries(KEYWORD_CATEGORIES).map(async ([category, terms]) => {
+            try {
+                const suggestions = await getCategorySuggestions(keyword, terms);
+                if (suggestions.length > 0) {
+                    categorizedResults[category] = suggestions;
+                }
+            } catch (error) {
+                console.error(`Error in category ${category}:`, error);
+                // 继续处理其他类别
+            }
+        });
+
+        await Promise.all(promises);
+
+        return res.status(200).json({
             success: true,
             categorizedSuggestions: categorizedResults,
             source: 'bing'
         });
 
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({
+        console.error('Server error:', error);
+        
+        // 确保返回有效的 JSON 响应
+        return res.status(500).json({
+            success: false,
             error: 'Failed to fetch suggestions',
-            message: error.message
+            message: error.message || 'Internal server error'
         });
     }
 } 
