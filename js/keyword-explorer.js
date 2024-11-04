@@ -31,6 +31,16 @@ function updateInterface() {
 // 存储最后的结果以便语言切换时重新显示
 let lastResults = null;
 
+// 获取 API 基础 URL
+function getApiBaseUrl() {
+    // 判断当前环境
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    } else {
+        return 'https://www.searchkit.cc';  // 生产环境 URL
+    }
+}
+
 // 生成关键词变体
 async function exploreKeywords() {
     const keyword = document.getElementById('keywordInput').value.trim();
@@ -40,7 +50,8 @@ async function exploreKeywords() {
     resultsDiv.innerHTML = '<div class="loading">Exploring keywords...</div>';
 
     try {
-        const response = await fetch(`http://localhost:3000/api/suggestions?keyword=${encodeURIComponent(keyword)}`);
+        const baseUrl = getApiBaseUrl();
+        const response = await fetch(`${baseUrl}/api/suggestions?keyword=${encodeURIComponent(keyword)}`);
         const data = await response.json();
         
         if (data.success && data.categorizedSuggestions) {
