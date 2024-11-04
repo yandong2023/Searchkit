@@ -66,21 +66,29 @@ async function getCategorySuggestions(keyword, terms) {
     return Array.from(suggestions);
 }
 
-// 获取基础建议
+// 修改 getBingSuggestions 函数，添加更多错误处理
 async function getBingSuggestions(keyword) {
     try {
+        console.log('Fetching suggestions for:', keyword);
+
         const response = await axios({
             method: 'get',
             url: `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(keyword)}`,
             headers: {
-                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
-                'Accept': '*/*',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Connection': 'keep-alive',
-                'Cache-Control': 'no-cache'
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                'Accept': 'application/json, text/javascript, */*',
+                'Accept-Language': 'en-US,en;q=0.9'
             },
-            timeout: 10000
+            timeout: 5000,
+            validateStatus: function (status) {
+                return status >= 200 && status < 300;
+            }
         });
+
+        if (!response.data || !Array.isArray(response.data)) {
+            throw new Error('Invalid response format');
+        }
+
         return response.data[1] || [];
     } catch (error) {
         console.error('Error in getBingSuggestions:', error);
@@ -88,65 +96,46 @@ async function getBingSuggestions(keyword) {
     }
 }
 
-export default async function handler(req, res) {
-    // 设置 CORS 头
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    // 处理 OPTIONS 请求
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    const { keyword } = req.query;
-    
-    if (!keyword) {
-        return res.status(400).json({
-            success: false,
-            error: 'Keyword is required'
-        });
-    }
-
+// 修改主处理函数
+module.exports = async (req, res) => {
     try {
-        // 获取所有分类的建议
-        const categorizedResults = {};
-        
-        // 获取基础建议
-        const baseSuggestions = await getBingSuggestions(keyword);
-        if (baseSuggestions.length > 0) {
-            categorizedResults.base = baseSuggestions;
+        // 设置 CORS 头
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+        // 处理 OPTIONS 请求
+        if (req.method === 'OPTIONS') {
+            return res.status(200).end();
         }
 
-        // 并行获取所有分类的建议
-        const promises = Object.entries(KEYWORD_CATEGORIES).map(async ([category, terms]) => {
-            try {
-                const suggestions = await getCategorySuggestions(keyword, terms);
-                if (suggestions.length > 0) {
-                    categorizedResults[category] = suggestions;
-                }
-            } catch (error) {
-                console.error(`Error in category ${category}:`, error);
-                // 继续处理其他类别
-            }
-        });
+        const { keyword } = req.query;
+        
+        if (!keyword) {
+            return res.status(400).json({
+                success: false,
+                error: 'Keyword is required'
+            });
+        }
 
-        await Promise.all(promises);
-
+        // 只获取基础建议，简化逻辑
+        const suggestions = await getBingSuggestions(keyword);
+        
         return res.status(200).json({
             success: true,
-            categorizedSuggestions: categorizedResults,
+            categorizedSuggestions: {
+                base: suggestions
+            },
             source: 'bing'
         });
 
     } catch (error) {
         console.error('Server error:', error);
         
-        // 确保返回有效的 JSON 响应
         return res.status(500).json({
             success: false,
-            error: 'Failed to fetch suggestions',
-            message: error.message || 'Internal server error'
+            error: 'Internal server error',
+            message: error.message || 'Unknown error'
         });
     }
-} 
+}; 
