@@ -1,28 +1,16 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/suggestions",
-      "destination": "/api/suggestions"
+  "functions": {
+    "api/suggestions.js": {
+      "memory": 1024,
+      "maxDuration": 10
     }
-  ],
-  "headers": [
+  },
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
-        }
-      ]
+      "src": "/api/suggestions",
+      "dest": "/api/suggestions.js",
+      "methods": ["GET", "OPTIONS"]
     }
   ]
 }
