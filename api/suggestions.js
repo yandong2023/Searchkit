@@ -36,6 +36,14 @@ const KEYWORD_CATEGORIES = {
     business: ['price', 'cost', 'pricing', 'buy', 'purchase', 'subscription']
 };
 
+// 定义常用前缀和修饰词
+const prefixes = {
+    questions: ['what', 'how', 'why', 'when', 'where', 'which', 'who', 'is', 'can', 'does'],
+    prepositions: ['in', 'for', 'with', 'without', 'vs', 'versus', 'or', 'and', 'to', 'from'],
+    alphabet: 'abcdefghijklmnopqrstuvwxyz'.split(''),
+    modifiers: ['best', 'top', 'free', 'online', 'cheap', 'easy', 'quick', 'simple', 'professional', 'alternative']
+};
+
 // 获取某个分类的建议
 async function getCategorySuggestions(keyword, terms) {
     const suggestions = new Set();
@@ -93,6 +101,63 @@ async function getBingSuggestions(keyword) {
     } catch (error) {
         console.error('Error in getBingSuggestions:', error);
         return [];
+    }
+}
+
+// 增强的 Bing 建议 API
+async function getEnhancedSuggestions(keyword) {
+    try {
+        const suggestions = {
+            base: [],           // 原始建议
+            questions: [],      // 问题形式
+            prepositions: [],   // 介词形式
+            alphabet: [],       // 字母前缀
+            modifiers: []       // 修饰词
+        };
+
+        // 获取基础建议
+        suggestions.base = await getBingSuggestions(keyword);
+
+        // 获取问题形式建议
+        const questionPromises = prefixes.questions.map(prefix => 
+            getBingSuggestions(`${prefix} ${keyword}`)
+        );
+        const questionResults = await Promise.allSettled(questionPromises);
+        suggestions.questions = questionResults
+            .filter(result => result.status === 'fulfilled')
+            .flatMap(result => result.value);
+
+        // 获取介词形式建议
+        const prepPromises = prefixes.prepositions.map(prefix =>
+            getBingSuggestions(`${keyword} ${prefix}`)
+        );
+        const prepResults = await Promise.allSettled(prepPromises);
+        suggestions.prepositions = prepResults
+            .filter(result => result.status === 'fulfilled')
+            .flatMap(result => result.value);
+
+        // 获取字母前缀建议
+        const alphabetPromises = prefixes.alphabet.map(letter =>
+            getBingSuggestions(`${keyword} ${letter}`)
+        );
+        const alphabetResults = await Promise.allSettled(alphabetPromises);
+        suggestions.alphabet = alphabetResults
+            .filter(result => result.status === 'fulfilled')
+            .flatMap(result => result.value);
+
+        // 获取修饰词建议
+        const modifierPromises = prefixes.modifiers.map(modifier =>
+            getBingSuggestions(`${modifier} ${keyword}`)
+        );
+        const modifierResults = await Promise.allSettled(modifierPromises);
+        suggestions.modifiers = modifierResults
+            .filter(result => result.status === 'fulfilled')
+            .flatMap(result => result.value);
+
+        return suggestions;
+    } catch (error) {
+        console.error('Error in getEnhancedSuggestions:', error);
+        return {};
     }
 }
 
