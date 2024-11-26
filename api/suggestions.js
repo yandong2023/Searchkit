@@ -13,25 +13,33 @@ const PREFIXES = {
 // 核心逻辑
 async function getSuggestions(keyword) {
     try {
-        // 获取所有类型的建议
+        // 获取基础建议
+        const baseSuggestions = await getBingSuggestions(keyword);
+
+        // 批量处理衍生词请求，每批5个
+        const batchSize = 5;
         const allSuggestions = {
-            base: await getBingSuggestions(keyword),
+            base: baseSuggestions,
             questions: [],
             prepositions: [],
             alphabet: [],
             modifiers: []
         };
 
-        // 获取各类衍生词建议
         for (const [type, prefixes] of Object.entries(PREFIXES)) {
-            const suggestions = await Promise.all(
-                prefixes.map(prefix => 
-                    type === 'alphabet' 
-                        ? getBingSuggestions(`${keyword} ${prefix}`)
-                        : getBingSuggestions(`${prefix} ${keyword}`)
-                )
-            );
-            allSuggestions[type] = [...new Set(suggestions.flat())];
+            const results = [];
+            for (let i = 0; i < prefixes.length; i += batchSize) {
+                const batch = prefixes.slice(i, i + batchSize);
+                const batchResults = await Promise.all(
+                    batch.map(prefix => 
+                        type === 'alphabet' 
+                            ? getBingSuggestions(`${keyword} ${prefix}`)
+                            : getBingSuggestions(`${prefix} ${keyword}`)
+                    )
+                );
+                results.push(...batchResults.flat());
+            }
+            allSuggestions[type] = [...new Set(results)];
         }
 
         return {
@@ -71,7 +79,6 @@ if (process.env.VERCEL) {
     // Vercel Serverless Function
     module.exports = async (req, res) => {
         try {
-            // 设置 CORS
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
             res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
