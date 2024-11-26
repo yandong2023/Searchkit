@@ -1,3 +1,5 @@
+const express = require('express');
+const cors = require('cors');
 const axios = require('axios');
 
 // 关键词分类配置
@@ -34,14 +36,6 @@ const KEYWORD_CATEGORIES = {
     
     // 商业类词组
     business: ['price', 'cost', 'pricing', 'buy', 'purchase', 'subscription']
-};
-
-// 定义常用前缀和修饰词
-const prefixes = {
-    questions: ['what', 'how', 'why', 'when', 'where', 'which', 'who', 'is', 'can', 'does'],
-    prepositions: ['in', 'for', 'with', 'without', 'vs', 'versus', 'or', 'and', 'to', 'from'],
-    alphabet: 'abcdefghijklmnopqrstuvwxyz'.split(''),
-    modifiers: ['best', 'top', 'free', 'online', 'cheap', 'easy', 'quick', 'simple', 'professional', 'alternative']
 };
 
 // 获取某个分类的建议
@@ -104,77 +98,35 @@ async function getBingSuggestions(keyword) {
     }
 }
 
-// 增强的 Bing 建议 API
-async function getEnhancedSuggestions(keyword) {
+// 核心逻辑函数
+async function handleSuggestions(keyword) {
     try {
-        const suggestions = {
-            base: [],           // 原始建议
-            questions: [],      // 问题形式
-            prepositions: [],   // 介词形式
-            alphabet: [],       // 字母前缀
-            modifiers: []       // 修饰词
+        console.log('Processing keyword:', keyword);
+        const suggestions = await getEnhancedSuggestions(keyword);
+        return {
+            success: true,
+            categorizedSuggestions: suggestions,
+            source: 'bing'
         };
-
-        // 获取基础建议
-        suggestions.base = await getBingSuggestions(keyword);
-
-        // 获取问题形式建议
-        const questionPromises = prefixes.questions.map(prefix => 
-            getBingSuggestions(`${prefix} ${keyword}`)
-        );
-        const questionResults = await Promise.allSettled(questionPromises);
-        suggestions.questions = questionResults
-            .filter(result => result.status === 'fulfilled')
-            .flatMap(result => result.value);
-
-        // 获取介词形式建议
-        const prepPromises = prefixes.prepositions.map(prefix =>
-            getBingSuggestions(`${keyword} ${prefix}`)
-        );
-        const prepResults = await Promise.allSettled(prepPromises);
-        suggestions.prepositions = prepResults
-            .filter(result => result.status === 'fulfilled')
-            .flatMap(result => result.value);
-
-        // 获取字母前缀建议
-        const alphabetPromises = prefixes.alphabet.map(letter =>
-            getBingSuggestions(`${keyword} ${letter}`)
-        );
-        const alphabetResults = await Promise.allSettled(alphabetPromises);
-        suggestions.alphabet = alphabetResults
-            .filter(result => result.status === 'fulfilled')
-            .flatMap(result => result.value);
-
-        // 获取修饰词建议
-        const modifierPromises = prefixes.modifiers.map(modifier =>
-            getBingSuggestions(`${modifier} ${keyword}`)
-        );
-        const modifierResults = await Promise.allSettled(modifierPromises);
-        suggestions.modifiers = modifierResults
-            .filter(result => result.status === 'fulfilled')
-            .flatMap(result => result.value);
-
-        return suggestions;
     } catch (error) {
-        console.error('Error in getEnhancedSuggestions:', error);
-        return {};
+        console.error('Error processing suggestions:', error);
+        throw error;
     }
 }
 
-// 修改主处理函数
-module.exports = async (req, res) => {
+// Vercel Serverless Function
+const handler = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     try {
-        // 设置 CORS 头
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-        // 处理 OPTIONS 请求
-        if (req.method === 'OPTIONS') {
-            return res.status(200).end();
-        }
-
-        const { keyword } = req.query;
+        const keyword = req.query.keyword;
+        console.log('Vercel function received keyword:', keyword);
         
         if (!keyword) {
             return res.status(400).json({
@@ -183,24 +135,53 @@ module.exports = async (req, res) => {
             });
         }
 
-        // 只获取基础建议，简化逻辑
-        const suggestions = await getBingSuggestions(keyword);
-        
-        return res.status(200).json({
-            success: true,
-            categorizedSuggestions: {
-                base: suggestions
-            },
-            source: 'bing'
-        });
-
+        const result = await handleSuggestions(keyword);
+        return res.status(200).json(result);
     } catch (error) {
-        console.error('Server error:', error);
-        
+        console.error('Vercel function error:', error);
         return res.status(500).json({
             success: false,
             error: 'Internal server error',
-            message: error.message || 'Unknown error'
+            message: error.message
         });
     }
-}; 
+};
+
+// 检查是否在 Vercel 环境
+if (process.env.VERCEL) {
+    module.exports = handler;
+} else {
+    // 本地开发环境
+    const app = express();
+    app.use(cors());
+    app.use(express.json());
+
+    app.get('/api/suggestions', async (req, res) => {
+        try {
+            const keyword = req.query.keyword;
+            console.log('Local server received keyword:', keyword);
+            
+            if (!keyword) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Keyword is required'
+                });
+            }
+
+            const result = await handleSuggestions(keyword);
+            res.json(result);
+        } catch (error) {
+            console.error('Local server error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Internal server error',
+                message: error.message
+            });
+        }
+    });
+
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Local server running on port ${port}`);
+    });
+} 
