@@ -10,7 +10,15 @@
       }
     },
     {
-      "src": "public/**",
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "**/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "**/*.css",
       "use": "@vercel/static"
     }
   ],
@@ -26,8 +34,19 @@
       }
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/zh/(.*)",
+      "dest": "/zh/$1"
+    },
+    {
+      "src": "/en/(.*)",
+      "dest": "/en/$1"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
