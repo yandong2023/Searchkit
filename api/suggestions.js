@@ -68,32 +68,22 @@ async function getCategorySuggestions(keyword, terms) {
     return Array.from(suggestions);
 }
 
-// 修改 getBingSuggestions 函数，添加更多错误处理
+// Bing建议API
 async function getBingSuggestions(keyword) {
     try {
-        console.log('Fetching suggestions for:', keyword);
-
         const response = await axios({
             method: 'get',
             url: `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(keyword)}`,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-                'Accept': 'application/json, text/javascript, */*',
-                'Accept-Language': 'en-US,en;q=0.9'
+                'Accept': 'application/json'
             },
-            timeout: 5000,
-            validateStatus: function (status) {
-                return status >= 200 && status < 300;
-            }
+            timeout: 5000
         });
-
-        if (!response.data || !Array.isArray(response.data)) {
-            throw new Error('Invalid response format');
-        }
-
-        return response.data[1] || [];
+        
+        return Array.isArray(response.data[1]) ? response.data[1] : [];
     } catch (error) {
-        console.error('Error in getBingSuggestions:', error);
+        console.error('Bing API error:', error.message);
         return [];
     }
 }
@@ -115,18 +105,19 @@ async function handleSuggestions(keyword) {
 }
 
 // Vercel Serverless Function
-const handler = async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
+module.exports = async (req, res) => {
     try {
-        const keyword = req.query.keyword;
-        console.log('Vercel function received keyword:', keyword);
+        // 设置 CORS 头
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+        // 处理 OPTIONS 请求
+        if (req.method === 'OPTIONS') {
+            return res.status(200).json({ status: 'ok' });
+        }
+
+        const { keyword } = req.query;
         
         if (!keyword) {
             return res.status(400).json({
@@ -135,53 +126,24 @@ const handler = async (req, res) => {
             });
         }
 
-        const result = await handleSuggestions(keyword);
-        return res.status(200).json(result);
+        // 获取建议
+        const suggestions = await getBingSuggestions(keyword);
+        
+        // 确保返回 JSON 格式
+        return res.status(200).json({
+            success: true,
+            suggestions: suggestions,
+            timestamp: new Date().toISOString()
+        });
+
     } catch (error) {
-        console.error('Vercel function error:', error);
+        console.error('Server error:', error);
+        
+        // 确保错误也是 JSON 格式
         return res.status(500).json({
             success: false,
             error: 'Internal server error',
-            message: error.message
+            message: error.message || 'Unknown error'
         });
     }
-};
-
-// 检查是否在 Vercel 环境
-if (process.env.VERCEL) {
-    module.exports = handler;
-} else {
-    // 本地开发环境
-    const app = express();
-    app.use(cors());
-    app.use(express.json());
-
-    app.get('/api/suggestions', async (req, res) => {
-        try {
-            const keyword = req.query.keyword;
-            console.log('Local server received keyword:', keyword);
-            
-            if (!keyword) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Keyword is required'
-                });
-            }
-
-            const result = await handleSuggestions(keyword);
-            res.json(result);
-        } catch (error) {
-            console.error('Local server error:', error);
-            res.status(500).json({
-                success: false,
-                error: 'Internal server error',
-                message: error.message
-            });
-        }
-    });
-
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-        console.log(`Local server running on port ${port}`);
-    });
-} 
+}; 
