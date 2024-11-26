@@ -1,20 +1,9 @@
 {
   "name": "searchkit",
   "version": "1.0.0",
-  "private": true,
   "dependencies": {
-    "axios": "^1.6.2"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "description": "高级搜索助手是一个强大的工具，旨在帮助用户更有效地使用搜索引擎，特别是针对需要深度信息检索的专业人士。",
-  "main": "languages.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "express": "^4.18.2",
+    "axios": "^1.6.2",
+    "cors": "^2.8.5"
+  }
 }
