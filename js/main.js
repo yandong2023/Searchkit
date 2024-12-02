@@ -25,29 +25,12 @@ function updateInterface() {
 
 // 创建工具按钮
 function createToolButtons() {
-    // 定义高频工具列表
-    const highFrequencyTools = [
-        "exactMatch",      // 精确配（最基础常用）
-        "siteSearch",      // 站内搜索（常用）
-        "fileType",        // 文件类型（常用）
-        "keywordExplorer"  // 关键词拓展（市场研究必备）
-    ];
-
-    // 定义专业功能工具列表
-    const proFeatureTools = [
-        "scholarSearch",   // 学术搜索
-        "patentSearch",    // 专利搜索
-        "trendSearch"      // 趋势分析
-    ];
-
     toolsArea.innerHTML = searchTools
         .filter(tool => languages[currentLanguage].tools[tool.name])
         .map(tool => {
             let className = 'tool-button';
-            if (highFrequencyTools.includes(tool.name)) {
-                className += ' high-frequency';
-            } else if (proFeatureTools.includes(tool.name)) {
-                className += ' pro-feature';
+            if (tool.name === 'youtubeDownload') {
+                className += ' youtube-download';
             }
             
             return `<button class="${className}" 
@@ -60,22 +43,24 @@ function createToolButtons() {
 
 // 应用搜索工具
 function applyTool(toolName) {
-    if (toolName === 'keywordExplorer') {
-        const currentLang = getCurrentLanguage();
-        window.location.href = `/keyword-explorer.html?lang=${currentLang}`;
+    if (toolName === 'youtubeDownload') {
+        // 获取当前输入的 URL
+        const currentText = searchInput.value.trim();
+        // 如果输入框有YouTube URL，直接跳转到9xbuddy
+        if (currentText && (currentText.includes('youtube.com/watch?v=') || currentText.includes('youtu.be/'))) {
+            window.location.href = `https://9xbuddy.in/process?url=${encodeURIComponent(currentText)}`;
+        } else {
+            // 否则跳转到下载页面
+            window.location.href = `youtube-download.html?lang=${currentLanguage}`;
+        }
         return;
     }
 
-    if (toolName === 'fileType') {
-        showFileTypeSelector();
-        return;
-    }
-    
     const tool = searchTools.find(t => t.name === toolName);
     if (tool && languages[currentLanguage].tools[toolName]) {
         let currentValue = searchInput.value.trim();
         
-        // 处理前缀 - 移除了需要空格的数组，确保所有操作符后直接连接值
+        // 处理前缀
         if (tool.prefix && !currentValue.startsWith(tool.prefix)) {
             currentValue = tool.prefix + currentValue;
         }

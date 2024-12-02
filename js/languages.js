@@ -1,6 +1,6 @@
 const languages = {
     en: {
-        title: "Advanced Search Assistant",
+        title: "SearchKit",
         searchPlaceholder: "Enter search terms...",
         searchButton: "Search",
         defaultTip: "Select a search tool or user type to get started",
@@ -144,7 +144,14 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "Tip: "
+        tipPrefix: "Tip: ",
+        youtube: {
+            title: "YouTube Video Download",
+            placeholder: "Enter YouTube video URL",
+            downloadButton: "Download",
+            backLink: "← Back to SearchKit",
+            invalidUrl: "Please enter a valid YouTube video URL"
+        }
     },
     zh: {
         title: "SearchKit", // 修改这里，从"高级搜索助手"改为"SearchKit"
@@ -291,7 +298,14 @@ const languages = {
                 suggestion: "点击打开关键词拓展工具"
             }
         },
-        tipPrefix: "提示："
+        tipPrefix: "提示：",
+        youtube: {
+            title: "YouTube视频下载",
+            placeholder: "输入YouTube视频网址",
+            downloadButton: "下载",
+            backLink: "← 返回SearchKit",
+            invalidUrl: "请输入有效的YouTube视频网址"
+        }
     },
     ja: {
         title: "高度な検索アシスタント",
@@ -373,9 +387,9 @@ const languages = {
                 suggestion: '数式を直接入力'
             },
             locationSearch: {
-                name: "場所検索",
-                description: "特定の場所で検索",
-                suggestion: '検索語に場所名を追加'
+                name: "位置検索",
+                description: "特定の位置で検索",
+                suggestion: '検索語に位置名を追加'
             },
             newsSearch: {
                 name: "ニュース検索",
@@ -383,8 +397,8 @@ const languages = {
                 suggestion: 'news:演算子を使用しニュースを索'
             },
             trendSearch: {
-                name: "トレンド",
-                description: "トレンドトピックを検索",
+                name: "���レンド",
+                description: "インパクトトピックを検索",
                 suggestion: 'trends:演算子を使用してトレンドを確認'
             },
             similarSites: {
@@ -438,7 +452,14 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "ヒント："
+        tipPrefix: "ヒント：",
+        youtube: {
+            title: "YouTube動画ダウンロード",
+            placeholder: "YouTube動画のURLを入力",
+            downloadButton: "ダウンロード",
+            backLink: "← SearchKitに戻る",
+            invalidUrl: "有効なYouTube動画URLを入力してください"
+        }
     },
     ko: {
         title: "고급 검색 도우미",
@@ -585,13 +606,20 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "팁: "
+        tipPrefix: "팁: ",
+        youtube: {
+            title: "YouTube 동영상 다운로드",
+            placeholder: "YouTube 동영상 URL 입력",
+            downloadButton: "다운로드",
+            backLink: "← SearchKit으로 돌아가기",
+            invalidUrl: "유효한 YouTube 동영상 URL을 입력하세요"
+        }
     },
     es: {
         title: "Asistente de búsqueda avanzada",
         searchPlaceholder: "Ingrese términos de búsqueda...",
         searchButton: "Buscar",
-        defaultTip: "Seleccione una herramienta de búsqueda o tipo de usuario para empezar",
+        defaultTip: "Seleccione una ayuda de búsqueda o tipo de usuario para empezar",
         userTypes: {
             general: "Usuario general",  // 添加普通用户
             researcher: "Investigador académico",
@@ -724,7 +752,7 @@ const languages = {
             commonCrawl: {
                 name: "Búsqueda CommonCrawl",
                 description: "Buscar en la base de datos CommonCrawl",
-                suggestion: 'Use el operador cc: para buscar en CommonCrawl'
+                suggestion: 'Use el operador cc: para buscar CommonCrawl'
             },
             keywordExplorer: {
                 name: "Keyword Explorer",
@@ -732,7 +760,14 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "Consejo: "
+        tipPrefix: "Consejo: ",
+        youtube: {
+            title: "Descargar Video de YouTube",
+            placeholder: "Ingrese la URL del video de YouTube",
+            downloadButton: "Descargar",
+            backLink: "← Volver a SearchKit",
+            invalidUrl: "Por favor ingrese una URL válida de YouTube"
+        }
     },
     de: {
         title: "Fortgeschrittener Suchassistent",
@@ -879,7 +914,14 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "Tip: "
+        tipPrefix: "Tip: ",
+        youtube: {
+            title: "YouTube Video Download",
+            placeholder: "YouTube Video-URL eingeben",
+            downloadButton: "Herunterladen",
+            backLink: "← Zurück zu SearchKit",
+            invalidUrl: "Bitte geben Sie eine gültige YouTube-Video-URL ein"
+        }
     },
     fr: {
         title: "Assistant de recherche avancé",
@@ -1026,7 +1068,14 @@ const languages = {
                 suggestion: "Click to open keyword exploration tool"
             }
         },
-        tipPrefix: "Conseil: "
+        tipPrefix: "Conseil: ",
+        youtube: {
+            title: "Télécharger la vidéo YouTube",
+            placeholder: "Entrez l'URL de la vidéo YouTube",
+            downloadButton: "Télécharger",
+            backLink: "← Retour à SearchKit",
+            invalidUrl: "Veuillez entrer une URL YouTube valide"
+        }
     }
 };
 
