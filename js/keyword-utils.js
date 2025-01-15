@@ -102,15 +102,20 @@ function estimateSearchVolume(keyword, baseKeyword, position = 0, totalResults =
 // 从 Bing 获取建议
 async function getBingSuggestions(keyword) {
     try {
-        const response = await axios.get(`https://api.bing.com/osjson.aspx?query=${encodeURIComponent(keyword)}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            },
+        // Use local proxy endpoint instead of direct Bing API call
+        const response = await axios.get(`/api/suggestions/bing?keyword=${encodeURIComponent(keyword)}`, {
             timeout: 5000
         });
-        return response.data[1] || [];
+        
+        if (!response.data || !response.data.suggestions) {
+            console.warn('No suggestions received from Bing API');
+            return [];
+        }
+        
+        return response.data.suggestions;
     } catch (error) {
         console.error('Error fetching Bing suggestions:', error);
+        // Return empty array but don't fail - we'll still have algorithmic suggestions
         return [];
     }
 }

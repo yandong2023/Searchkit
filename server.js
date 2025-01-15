@@ -4,6 +4,7 @@ const cors = require('cors');
 
 // 导入路由
 const suggestionsRouter = require('./api/suggestions');
+const bingSuggestionsRouter = require('./api/bing-suggestions');
 
 // 导入工具函数
 let keywordUtils;
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 
 // 使用建议路由
 app.use('/api/suggestions', suggestionsRouter);
+app.use('/api/suggestions/bing', bingSuggestionsRouter);
 
 // 错误处理中间件
 app.use((err, req, res, next) => {
