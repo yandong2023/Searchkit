@@ -17,27 +17,36 @@ try {
 }
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // 启用 CORS
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
 
 // 解析 JSON 请求体
 app.use(express.json());
 
 // 提供静态文件服务
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname)));
 
 // 处理语言路由
 const languages = ['zh', 'ja', 'ko', 'es', 'de', 'fr'];
 languages.forEach(lang => {
-    app.get(`/${lang}/`, (req, res) => {
+    app.get(`/${lang}/*`, (req, res) => {
         res.sendFile(path.join(__dirname, 'index.html'));
     });
 });
 
-// 处理根路由
-app.get('/', (req, res) => {
+// 处理根路由和其他所有路由
+app.get('*', (req, res) => {
+    // 如果是 favicon.ico 请求
+    if (req.path === '/favicon.ico') {
+        return res.sendFile(path.join(__dirname, 'favicon.ico'));
+    }
+    // 其他所有路由返回 index.html
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -56,8 +65,8 @@ app.use((err, req, res, next) => {
 });
 
 // 启动服务器
-const server = app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 
 // 优雅地处理服务器关闭
