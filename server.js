@@ -23,36 +23,43 @@ const port = process.env.PORT || 3000;
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type']
+    allowedHeaders: ['Content-Type', 'Accept']
 }));
 
 // 解析 JSON 请求体
 app.use(express.json());
 
-// 提供静态文件服务
-app.use(express.static(path.join(__dirname)));
+// API 路由处理
+app.use('/api/suggestions', (req, res, next) => {
+    console.log('API Request:', req.method, req.path, req.query);
+    next();
+}, suggestionsRouter);
 
-// 处理语言路由
-const languages = ['zh', 'ja', 'ko', 'es', 'de', 'fr'];
-languages.forEach(lang => {
-    app.get(`/${lang}/*`, (req, res) => {
+app.use('/api/suggestions/bing', (req, res, next) => {
+    console.log('Bing API Request:', req.method, req.path, req.query);
+    next();
+}, bingSuggestionsRouter);
+
+// 静态文件处理
+if (process.env.VERCEL) {
+    // Vercel 环境下的静态文件处理
+    app.use(express.static(path.join(__dirname)));
+    
+    // API 路由之后的所有请求都返回 index.html
+    app.get('*', (req, res) => {
+        if (req.path.startsWith('/api/')) {
+            res.status(404).json({ error: 'API endpoint not found' });
+        } else {
+            res.sendFile(path.join(__dirname, 'index.html'));
+        }
+    });
+} else {
+    // 本地环境下的静态文件处理
+    app.use(express.static(path.join(__dirname)));
+    app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'index.html'));
     });
-});
-
-// 处理根路由和其他所有路由
-app.get('*', (req, res) => {
-    // 如果是 favicon.ico 请求
-    if (req.path === '/favicon.ico') {
-        return res.sendFile(path.join(__dirname, 'favicon.ico'));
-    }
-    // 其他所有路由返回 index.html
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// 使用建议路由
-app.use('/api/suggestions', suggestionsRouter);
-app.use('/api/suggestions/bing', bingSuggestionsRouter);
+}
 
 // 错误处理中间件
 app.use((err, req, res, next) => {

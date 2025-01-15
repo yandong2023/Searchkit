@@ -6,11 +6,11 @@
       "use": "@vercel/node"
     },
     {
-      "src": "js/**/*.js",
+      "src": "js/**",
       "use": "@vercel/static"
     },
     {
-      "src": "css/**/*.css",
+      "src": "css/**",
       "use": "@vercel/static"
     },
     {
@@ -20,6 +20,10 @@
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
       "src": "/js/(.*)",
       "dest": "/js/$1"
     },
@@ -28,16 +32,8 @@
       "dest": "/css/$1"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
-    },
-    {
-      "src": "/languages.js",
-      "dest": "/languages.js"
     },
     {
       "src": "/(zh|ja|ko|es|de|fr)/(.*)",
@@ -45,8 +41,7 @@
     },
     {
       "src": "/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "/index.html"
+      "dest": "/server.js"
     }
   ]
 }
