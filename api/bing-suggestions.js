@@ -1,40 +1,30 @@
 const express = require('express');
-const router = express.Router();
 const axios = require('axios');
+const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const { keyword } = req.query;
+        const { q } = req.query;
         
-        if (!keyword) {
-            return res.status(400).json({
-                success: false,
-                error: 'Keyword is required'
-            });
+        if (!q || typeof q !== 'string') {
+            return res.status(400).json({ error: 'Query parameter is required' });
         }
 
-        // Make request to Bing API
-        const response = await axios.get(`https://api.bing.com/osjson.aspx?query=${encodeURIComponent(keyword)}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            },
-            timeout: 5000
-        });
-
-        // Extract suggestions from Bing's response
+        // 构建Bing建议API的URL
+        const bingUrl = `https://api.bing.com/osjson.aspx?query=${encodeURIComponent(q)}`;
+        
+        const response = await axios.get(bingUrl);
+        
+        // Bing API返回的是一个数组，第二个元素包含建议词
         const suggestions = response.data[1] || [];
-
-        res.json({
-            success: true,
-            suggestions
-        });
+        
+        // 限制返回的建议数量
+        const limitedSuggestions = suggestions.slice(0, 10);
+        
+        res.json(limitedSuggestions);
     } catch (error) {
         console.error('Error fetching Bing suggestions:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message,
-            suggestions: []
-        });
+        res.status(500).json({ error: 'Failed to fetch suggestions' });
     }
 });
 
